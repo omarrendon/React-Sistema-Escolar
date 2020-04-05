@@ -123,7 +123,8 @@ export default class Alumno extends Component {
           <h2>LISTA DE ALUMNOS</h2>
           <ul>
             {this.state.users.map(usuario => (
-              <li key={usuario.id_alumo} onDoubleClick={ () => this.deleteUser(usuario.id_alumo)}>
+              <div className="lista" key={usuario.id_alumo}>
+              <li >
                 <span> Nombre : {usuario.nombres} </span>
                 <br />
                 <span> Apellido Paterno : {usuario.apellido_paterno} </span>
@@ -134,6 +135,8 @@ export default class Alumno extends Component {
                 <br />
                 <span> Licenciatura : {usuario.carrera.nombre} </span>
               </li>
+              <button  onClick={ () => this.deleteUser(usuario.id_alumo)}>Eliminar</button>
+              </div>
             ))}
           </ul>
         </div>
