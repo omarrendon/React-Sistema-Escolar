@@ -40,7 +40,7 @@ export default class Alumno extends Component {
 
   onSubmit = async e => {
     e.preventDefault();
-    const response = await axios.post("http://localhost:4000/alumno", {
+    await axios.post("http://localhost:4000/alumno", {
       nombres: this.state.alumno.nombres,
       apellido_paterno: this.state.alumno.apellido_paterno,
       apellido_materno: this.state.alumno.apellido_materno,
@@ -57,9 +57,13 @@ export default class Alumno extends Component {
       users: response.data
     });
     console.log(this.state.users);
-    // console.log(this.state.carreras)
   };
-
+  
+  deleteUser = async (id_alumo) => {
+    await axios.delete(`http://localhost:4000/alumno/${id_alumo}`);
+    this.getData();
+    console.log('USUARIO ELIMINADO :' + id_alumo);
+  }
   render() {
     return (
       <div>
@@ -119,7 +123,7 @@ export default class Alumno extends Component {
           <h2>LISTA DE ALUMNOS</h2>
           <ul>
             {this.state.users.map(usuario => (
-              <li key={usuario.nombres}>
+              <li key={usuario.id_alumo} onDoubleClick={ () => this.deleteUser(usuario.id_alumo)}>
                 <span> Nombre : {usuario.nombres} </span>
                 <br />
                 <span> Apellido Paterno : {usuario.apellido_paterno} </span>

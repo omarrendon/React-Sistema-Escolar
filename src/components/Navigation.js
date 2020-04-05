@@ -13,6 +13,12 @@ export default class Navigation extends Component {
             <li>
               <Link to={"/maestro"} className="Links"> Maestro </Link> 
             </li>
+            <li>
+            <Link to={"/"} className="Links"> Home </Link> 
+            </li>
+            <li>
+            <Link to={"/asistencias"} className="Links"> Asistencias </Link> 
+            </li>
           </ul>
         </nav>
       </div>
