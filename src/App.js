@@ -7,6 +7,7 @@ import Navigation from './components/Navigation'
 import Home from './components/Home'
 import Asistencias from './components/Asistencias'
 import Materia from "./components/Materia";
+import AlumnoMateria from "./components/AlumnoMateria";
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
         <Route path="/alumno" component={Alumno}/>
         <Route path="/asistencias" component={Asistencias}/>
         <Route path="/materia" component={Materia}/>
-
+        <Route path="/calificacion" component={AlumnoMateria}/>
       </Router>
     </div>
   );
