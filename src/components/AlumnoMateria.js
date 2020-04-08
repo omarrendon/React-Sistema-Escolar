@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 
+
+
 export default class AlumnoMateria extends Component {
   state = {
     alumnos: [],
@@ -11,11 +13,12 @@ export default class AlumnoMateria extends Component {
       fk_alumno: "",
       fk_materia: "",
       fk_grupo: "",
-      fk_calificion: "",
+      fk_calificacion: "",
       faltas_totales: ""
     },
     content: [],
   };
+  
   getAll() {
     this.getAlumnos();
     this.getMateria();
@@ -36,8 +39,8 @@ export default class AlumnoMateria extends Component {
     this.setState({
       calificaciones: response.data.data
     });
-    console.log("CALIFICACIONES");
-    console.log(this.state.calificaciones);
+    // console.log("CALIFICACIONES");
+    // console.log(this.state.calificaciones);
   };
 
   getGrupos = async () => {
@@ -45,8 +48,8 @@ export default class AlumnoMateria extends Component {
     this.setState({
       grupos: response.data.data
     });
-    console.log("GRUPOS");
-    console.log(this.state.grupos);
+    // console.log("GRUPOS");
+    // console.log(this.state.grupos);
   };
 
   getAlumnos = async () => {
@@ -54,8 +57,8 @@ export default class AlumnoMateria extends Component {
     this.setState({
       alumnos: response.data
     });
-    console.log("ALUMNOS");
-    console.log(this.state.alumnos);
+    // console.log("ALUMNOS");
+    // console.log(this.state.alumnos);
   };
 
   getMateria = async () => {
@@ -63,8 +66,8 @@ export default class AlumnoMateria extends Component {
     this.setState({
       materias: response.data.data
     });
-    console.log("MATERIAS");
-    console.log(this.state.materias);
+    // console.log("MATERIAS");
+    // console.log(this.state.materias);
   };
 
   getAlumnoMateria = async () => {
@@ -92,10 +95,13 @@ export default class AlumnoMateria extends Component {
       fk_alumno: this.state.Alumno_Materia.fk_alumno,
       fk_materia: this.state.Alumno_Materia.fk_materia,
       fk_grupo: this.state.Alumno_Materia.fk_grupo,
-      fk_calificion: this.state.Alumno_Materia.fk_calificion
+      fk_calificacion: this.state.Alumno_Materia.fk_calificacion
     });
-    this.getAll()
+    console.log("Creado")
+    // this.getAll()
   };
+ 
+
 
   render() {
     return (
@@ -149,8 +155,8 @@ export default class AlumnoMateria extends Component {
             
             <label htmlFor="">Calificaciones</label>
             <select 
-              name="fk_calificion"
-              value={this.state.Alumno_Materia.fk_calificion}
+              name="fk_calificacion"
+              value={this.state.Alumno_Materia.fk_calificacion}
               onChange={this.onChange}
             >
               {
@@ -180,7 +186,6 @@ export default class AlumnoMateria extends Component {
             <button type="submit">Guardar</button>
           </form>
         </div>
-
 
         <div className="list">
           <ul>
@@ -226,9 +231,7 @@ export default class AlumnoMateria extends Component {
                     {boleta.aluGrupo.clave_grupo} - {boleta.aluGrupo.turno}
                   </span>
                   <br />
-                  
-                  aluCalificaciones
-                  {/* <span>
+                  <span>
                     {" "}
                     <strong>Calificaciones : </strong>
                     <br />
@@ -256,7 +259,7 @@ export default class AlumnoMateria extends Component {
                     <span>- Insuficiencia </span>
                     {boleta.aluCalificaciones.insuficiencia}
                     <br />
-                  </span> */}
+                  </span> 
                     <button>Imprimir</button>
                 </li>
                 <br />
@@ -269,3 +272,5 @@ export default class AlumnoMateria extends Component {
     );
   }
 }
+
+                   
