@@ -19,20 +19,14 @@ export default class AlumnoMateria extends Component {
     content: [],
   };
   
-  getAll() {
-    this.getAlumnos();
-    this.getMateria();
-    this.getGrupos();
-    this.getCalificaciones();
-    this.getAlumnoMateria();
-  }
+  
   componentDidMount() {
     this.getAlumnos();
     this.getMateria();
     this.getGrupos();
     this.getCalificaciones();
     this.getAlumnoMateria();
-  }
+  } 
 
   getCalificaciones = async () => {
     const response = await axios.get("http://localhost:4000/calificacion");
@@ -98,7 +92,7 @@ export default class AlumnoMateria extends Component {
       fk_calificacion: this.state.Alumno_Materia.fk_calificacion
     });
     console.log("Creado")
-    // this.getAll()
+    
   };
  
 

@@ -4,41 +4,51 @@ import { Link } from "react-router-dom";
 export default class Navigation extends Component {
   render() {
     return (
-      <div>
-        <nav>
-          <ul>
-            <li>
-            <Link to={"/"} className="Links"> Home </Link> 
-            </li>
+      <nav className="navbar navbar-expand-lg  navbar-dark bg-dark">
+        <div className="container">
+          <Link to={"/"} className="navbar-brand">
+            SISTEMA DE CALIFICACIONES
+          </Link>
 
-            <li>
-              <Link to={"/alumno"} className="Links"> Alumno </Link> 
-            </li>
-            
-            <li>
-              <Link to={"/maestro"} className="Links"> Maestro </Link> 
-            </li>
-            
-            <li>
-            <Link to={"/asistencias"} className="Links"> Asistencias </Link> 
-            </li>
-            
-            <li>
-            <Link to={"/materia"} className="Links"> Materias </Link> 
-            </li>
-            
-            <li>
-            <Link to={"/calificacion"} className="Links"> Calificar Materia </Link> 
-            </li>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div className="navbar-nav ml-auto">
+              <Link to={"/alumno"} className="nav-item nav-link">
+                Alumno{" "}
+              </Link>
 
-            <li>
-            <Link to={"/boleta"} className="Links"> Boleta </Link> 
-            </li>
+              <Link to={"/maestro"} className="nav-item nav-link">
+                Maestro{" "}
+              </Link>
 
-            
-          </ul>
-        </nav>
-      </div>
+              <Link to={"/asistencias"} className="nav-item nav-link">
+                Asistencias{" "}
+              </Link>
+
+              <Link to={"/materia"} className="nav-item nav-link">
+                Materias{" "}
+              </Link>
+              <Link to={"/calificacion"} className="nav-item nav-link">
+                Calificar Materia{" "}
+              </Link>
+
+              <Link to={"/boleta"} className="nav-item nav-link">
+                Boleta{" "}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </nav>
     );
   }
 }

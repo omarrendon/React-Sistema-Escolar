@@ -41,54 +41,31 @@ export default class Asistencias extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="titulo">
-          <h2>Sección de Asistencias</h2>
-        </div>
-        <div className="listaAsistencias">
-          <ul>
-            {this.state.asistencias.map(asistencia => (
-              <div className="lista" key={asistencia.id_asistencias}>
-                <li>
-                  <span>
-                    {" "}
-                    <strong>Asignatura : </strong>{" "}
-                    {asistencia.asistenciasMateria.nombre}
-                  </span>
-                  <br />
-                  <span>
-                    {" "}
-                    <strong>Numero de Asistencias : </strong>{" "}
-                    {asistencia.numero_asistencias}
-                  </span>
-                  <br />
-
-                  <span>
-                    {" "}
-                    <strong>Faltas Permitidas : </strong>{" "}
-                    {asistencia.asistenciasMateria.faltas_permitidas}
-                  </span>
-                  <br />
-
-
-                  <span>
-                    {" "}
-                    <strong>Alumno : </strong>{" "}
-                    {asistencia.asistenciasAlumno.nombres}{" "}
-                    {asistencia.asistenciasAlumno.apellido_paterno}{" "}
-                    {asistencia.asistenciasAlumno.apellido_materno}
-                  </span>
-                  {/* <br/>
-                <span>{asistencia.asistenciasAlumno.apellido_paterno}</span>
-                <br/>
-                <span>{asistencia.asistenciasAlumno.apellido_materno}</span> */}
-                </li>
-                <br />
-              </div>
-            ))}
-          </ul>
-        </div>
-      </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col"> ASIGNATURA</th>
+            <th scope="col"> NÚMERO DE ASISTENCIAS</th>
+            <th scope="col"> FALTAS PERMITIDAS</th>
+            <th scope="col"> ALUMNO</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.state.asistencias.map(asistencia => (
+            <tr key={asistencia.id_asistencias}>
+              <td>{asistencia.asistenciasMateria.nombre}</td>
+              <td>{asistencia.numero_asistencias}</td>
+              <td>{asistencia.asistenciasMateria.faltas_permitidas}</td>
+              <td>
+                {asistencia.asistenciasAlumno.nombres}{" "}
+                {asistencia.asistenciasAlumno.apellido_paterno}{" "}
+                {asistencia.asistenciasAlumno.apellido_materno}
+              </td>
+              <td></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     );
   }
 }

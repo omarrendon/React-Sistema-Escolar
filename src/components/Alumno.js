@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Style from "./styles/alumno.module.css";
 
 export default class Alumno extends Component {
   state = {
@@ -58,87 +59,117 @@ export default class Alumno extends Component {
     });
     console.log(this.state.users);
   };
-  
-  deleteUser = async (id_alumo) => {
+
+  deleteUser = async id_alumo => {
     await axios.delete(`http://localhost:4000/alumno/${id_alumo}`);
     this.getData();
-    console.log('USUARIO ELIMINADO :' + id_alumo);
-  }
+    console.log("USUARIO ELIMINADO :" + id_alumo);
+  };
   render() {
     return (
-      <div>
-        <div className="form">
-          <h2>REGISTRO DE ALUMNOS</h2>
-          <form onSubmit={this.onSubmit}>
-            <input
-              value={this.state.alumno.nombres}
-              type="text"
-              placeholder="Nombres"
-              name="nombres"
-              onChange={this.onChange}
-            />
-
-            <input
-              value={this.state.alumno.apellido_paterno}
-              type="text"
-              placeholder=" Apellido Paterno"
-              name="apellido_paterno"
-              onChange={this.onChange}
-            />
-
-            <input
-              value={this.state.alumno.apellido_materno}
-              type="text"
-              placeholder="Apellido Materno"
-              name="apellido_materno"
-              onChange={this.onChange}
-            />
-
-            <select
-              value={this.state.alumno.fk_carrera}
-              name="fk_carrera"
-              onChange={this.onChange}
-            >
-              {this.state.carreras.map(lic => (
-                <option value={lic.id_carrera} key={lic.id_carrera}>
-                  {" "}
-                  {lic.nombre}
-                </option>
-              ))}
-            </select>
-
-            <input
-              value={this.state.alumno.matricula}
-              type="text"
-              placeholder="Matricula"
-              name="matricula"
-              onChange={this.onChange}
-            />
-
-            <button type="submit">Guardar</button>
-          </form>
-        </div>
-
-        <div className="lista">
-          <h2>LISTA DE ALUMNOS</h2>
-          <ul>
-            {this.state.users.map(usuario => (
-              <div className="lista" key={usuario.id_alumo}>
-              <li >
-                <span> Nombre : {usuario.nombres} </span>
+      <div className="row">
+        <div className="col-md-5">
+          <div className="card card-body">
+            <h3>REGISTRO DE ALUMNOS</h3>
+            <form onSubmit={this.onSubmit}>
+              <div className="form-group">
                 <br />
-                <span> Apellido Paterno : {usuario.apellido_paterno} </span>
+                <input
+                  className={Style.formgroup}
+                  value={this.state.alumno.nombres}
+                  type="text"
+                  placeholder="Nombres"
+                  name="nombres"
+                  onChange={this.onChange}
+                  className="form-control"
+                />
                 <br />
-                <span> Apellido Materno : {usuario.apellido_materno} </span>
+                <input
+                  className={Style.formgroup}
+                  value={this.state.alumno.apellido_paterno}
+                  type="text"
+                  placeholder=" Apellido Paterno"
+                  name="apellido_paterno"
+                  onChange={this.onChange}
+                  className="form-control"
+                />
                 <br />
-                <span> Matricula : {usuario.matricula} </span>
+                <input
+                  className={Style.formgroup}
+                  value={this.state.alumno.apellido_materno}
+                  type="text"
+                  placeholder="Apellido Materno"
+                  name="apellido_materno"
+                  onChange={this.onChange}
+                  className="form-control"
+                />
                 <br />
-                <span> Licenciatura : {usuario.carrera.nombre} </span>
-              </li>
-              <button  onClick={ () => this.deleteUser(usuario.id_alumo)}>Eliminar</button>
+                <input
+                  className={Style.formgroup}
+                  value={this.state.alumno.matricula}
+                  type="text"
+                  placeholder="Matricula"
+                  name="matricula"
+                  onChange={this.onChange}
+                  className="form-control"
+                />
+                <br />
+                <select
+                  className={Style.formgroup}
+                  value={this.state.alumno.fk_carrera}
+                  name="fk_carrera"
+                  onChange={this.onChange}
+                  className="custom-select"
+                >
+                  {this.state.carreras.map(lic => (
+                    <option value={lic.id_carrera} key={lic.id_carrera}>
+                      {" "}
+                      {lic.nombre}
+                    </option>
+                  ))}
+                </select>
+                <br />
+                <button type="submit" className="btn btn-success">
+                  Guardar
+                </button>
               </div>
-            ))}
-          </ul>
+            </form>
+          </div>
+        </div>
+        <div className="col-md-7">
+          <div className="list-group">
+            <table className="table">
+              <thead className="thead-dark">
+                <tr>
+                  <th scope="col"> Nombres</th>
+                  <th scope="col"> Apellido Paterno</th>
+                  <th scope="col"> Apellido Materno</th>
+                  <th scope="col"> Licenciatura</th>
+                  <th scope="col"> Matricula</th>
+                  <th scope="col"> Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.users.map(usuario => (
+                  <tr key={usuario.id_alumo}>
+                    <td>{usuario.nombres}</td>
+                    <td>{usuario.apellido_paterno}</td>
+                    <td>{usuario.apellido_materno}</td>
+                    <td>{usuario.matricula}</td>
+                    <td>{usuario.carrera.nombre}</td>
+                    <td>
+                      <button
+                        onClick={() => this.deleteUser(usuario.id_alumo)}
+                        className="btn btn-danger"
+                      >
+                        Eliminar
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     );
