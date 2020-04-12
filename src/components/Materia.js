@@ -62,113 +62,129 @@ export default class Materia extends Component {
       fk_maestro: this.state.materia.fk_maestro,
       fk_carrera: this.state.materia.fk_carrera
     });
+    this.getCarrera();
+    this.getMaestro();
+    this.getMateria();
   };
 
-  deleteUser = async (id_materia) => {
-      await axios.delete(`http://localhost:4000/materia/${id_materia}`);
-      this.getMateria();
-      console.log('MATERIA ELIMINADA :' + id_materia);
-  }
+  deleteUser = async id_materia => {
+    await axios.delete(`http://localhost:4000/materia/${id_materia}`);
+    this.getMateria();
+    console.log("MATERIA ELIMINADA :" + id_materia);
+  };
 
   render() {
     return (
-      <div>
-        <div className="form">
-          <form action="" onSubmit={this.onSubmit}>
-            <input
-              value={this.state.materia.nombre}
-              type="text"
-              placeholder="Nombre Asignatura"
-              name="nombre"
-              onChange={this.onChange}
-            />
+      <div className="row">
+        <div className="col-md-6">
+          <div className="card card-body">
+            <h3>Registro de Asignaturas</h3>
+            <form onSubmit={this.onSubmit}>
+              <div className="form-group">
+                <br />
+                <input
+                  value={this.state.materia.nombre}
+                  type="text"
+                  placeholder="Nombre Asignatura"
+                  name="nombre"
+                  onChange={this.onChange}
+                  className="form-control"
+                />
+                <br />
 
-            <input
-              value={this.state.materia.horas}
-              type="number"
-              placeholder=" Horas totales de la Asignatura"
-              name="horas"
-              onChange={this.onChange}
-            />
+                <input
+                  value={this.state.materia.horas}
+                  type="number"
+                  placeholder=" Horas totales de la Asignatura"
+                  name="horas"
+                  className="form-control"
+                  onChange={this.onChange}
+                />
+                <br />
 
-            <input
-              value={this.state.materia.faltas_permitidas}
-              type="number"
-              placeholder="Número de faltas permitidas"
-              name="faltas_permitidas"
-              onChange={this.onChange}
-            />
+                <input
+                  value={this.state.materia.faltas_permitidas}
+                  type="number"
+                  placeholder="Número de faltas permitidas"
+                  name="faltas_permitidas"
+                  className="form-control"
+                  onChange={this.onChange}
+                />
+                <br />
 
-            <label htmlFor="">Licenciatura</label>
-            <select
-              value={this.state.materia.fk_carrera}
-              name="fk_carrera"
-              onChange={this.onChange}
-            >
-              {this.state.carreras.map(lic => (
-                <option value={lic.id_carrera} key={lic.id_carrera}>
-                  {" "}
-                  {lic.nombre}
-                </option>
-              ))}
-            </select>
+                <label htmlFor="">Licenciatura</label>
+                <select
+                  value={this.state.materia.fk_carrera}
+                  name="fk_carrera"
+                  className="custom-select"
+                  onChange={this.onChange}
+                >
+                  {this.state.carreras.map(lic => (
+                    <option value={lic.id_carrera} key={lic.id_carrera}>
+                      {" "}
+                      {lic.nombre}
+                    </option>
+                  ))}
+                </select>
+                <br />
+                <br />
 
-            <label htmlFor="">Docente a impaertir la materia</label>
-            <select
-              name="fk_maestro"
-              value={this.state.materia.fk_maestro}
-              onChange={this.onChange}
-            >
-              {this.state.maestros.map(maestro => (
-                <option value={maestro.id_maestro} key={maestro.id_maestro}>
-                  {" "}
-                  {maestro.nombres} {maestro.apellido_paterno}{" "}
-                  {maestro.apellido_materno}
-                </option>
-              ))}
-            </select>
-
-            <button type="submit">Guardar</button>
-          </form>
+                <label htmlFor="">Docente a impartir la materia</label>
+                <select
+                  name="fk_maestro"
+                  value={this.state.materia.fk_maestro}
+                  className="custom-select"
+                  onChange={this.onChange}
+                >
+                  {this.state.maestros.map(maestro => (
+                    <option value={maestro.id_maestro} key={maestro.id_maestro}>
+                      {" "}
+                      {maestro.nombres} {maestro.apellido_paterno}{" "}
+                      {maestro.apellido_materno}
+                    </option>
+                  ))}
+                </select>
+                <br />
+                <br />
+                <button type="submit" className="btn btn-success">
+                  Guardar
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-        <div className="list">
-          <ul>
-            {this.state.materias.map(materia => (
-              <div className="data" key={materia.id_materia}>
-                <li>
+        <div className="col-md-6">
+          {this.state.materias.map(materia => (
+            <div className="card bg-light mb-3" key={materia.id_materia}>
+              <div className="card-header">{materia.materiaCarrera.nombre}</div>
+              <div className="card-body">
+                <h5 className="card-title">{materia.nombre}</h5>
+                <p className="card-text">
                   <span>
                     {" "}
-                    <strong>Asignatura : </strong> {materia.nombre}{" "}
-                  </span>
-                  <br/>
-                  <span>
-                    {" "}
-                    <strong>Total deHoras : </strong> {materia.horas}{" "}
-                  </span>
-                  <br/>
-                  <span>
-                    {" "}
-                    <strong>Faltas Permitidas : </strong>{" "}
-                    {materia.faltas_permitidas}
-                  </span>
-                  <br/> 
-                  <span>
-                    {" "}
-                    <strong>Licenciatura : </strong>{" "}
-                    {materia.materiaCarrera.nombre}
-                  </span>
-                  <br/>
-                  <span>
-                    {" "}
-                    <strong>Docente : </strong> {materia.materiaMaestro.nombres}{" "}
+                    <strong>Docente :</strong>
+                    {materia.materiaMaestro.nombres}{" "}
                     {materia.materiaMaestro.apellido_paterno}{" "}
                     {materia.materiaMaestro.apellido_materno}
                   </span>
-                </li>
-                <button onClick={() => this.deleteUser(materia.id_materia)}>Eliminar</button>
+                  <br />
+                  <span>
+                    {" "}
+                    <strong>Total de Horas : </strong>
+                    {materia.horas}
+                    {" Horas "}
+                  </span>
+                  <br />
+                  <span>
+                    <strong>Faltas Permitidas : </strong>
+                    {" "}
+                    {materia.faltas_permitidas}
+                  </span>
+                </p>
+                <button className="btn btn-danger" onClick={() => this.deleteUser(materia.id_materia)}>Eliminar</button>
               </div>
-            ))}
-          </ul>
+            </div>
+          ))}
         </div>
       </div>
     );

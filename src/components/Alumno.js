@@ -129,6 +129,7 @@ export default class Alumno extends Component {
                   ))}
                 </select>
                 <br />
+                <div class="dropdown-divider"></div>
                 <button type="submit" className="btn btn-success">
                   Guardar
                 </button>

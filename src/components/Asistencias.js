@@ -41,7 +41,7 @@ export default class Asistencias extends Component {
 
   render() {
     return (
-      <table class="table table-striped">
+      <table className="table table-striped">
         <thead>
           <tr>
             <th scope="col"> ASIGNATURA</th>
