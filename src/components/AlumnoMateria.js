@@ -80,16 +80,22 @@ export default class AlumnoMateria extends Component {
   };
 
   onSubmit = async e => {
+    const {faltas_totales, fk_alumno, fk_materia, fk_grupo, fk_calificacion} = this.state.Alumno_Materia
     e.preventDefault();
-    await axios.post("http://localhost:4000/AlumnoMateria", {
-      faltas_totales: this.state.Alumno_Materia.faltas_totales,
-      fk_alumno: this.state.Alumno_Materia.fk_alumno,
-      fk_materia: this.state.Alumno_Materia.fk_materia,
-      fk_grupo: this.state.Alumno_Materia.fk_grupo,
-      fk_calificacion: this.state.Alumno_Materia.fk_calificacion
-    });
-    console.log("Creado");
-    this.getAlumnoMateria();
+    if( faltas_totales === "" || fk_alumno === "" || fk_materia === "" || fk_grupo === "" || fk_calificacion === "") {
+      alert("RELLENAR TODOS LOS CAMPOS CORRECTAMENTE");
+    } else {
+
+      await axios.post("http://localhost:4000/AlumnoMateria", {
+        faltas_totales: faltas_totales,
+        fk_alumno: fk_alumno,
+        fk_materia: fk_materia,
+        fk_grupo: fk_grupo,
+        fk_calificacion: fk_calificacion
+      });
+      console.log("Creado");
+      this.getAlumnoMateria();
+    }
   };
 
   render() {
@@ -289,86 +295,3 @@ export default class AlumnoMateria extends Component {
     );
   }
 }
-
-//   <div className="list">
-//     <ul>
-//       {this.state.content.map(boleta => (
-//         <div key={boleta.id_alumno_materia}>
-//           <li>
-//             <span>
-//               {" "}
-//               <strong>Alumno : </strong> {boleta.aluAlumno.nombres}{" "}
-//               {boleta.aluAlumno.apellido_paterno}{" "}
-//               {boleta.aluAlumno.apellido_materno}
-//             </span>
-//             <br />
-
-//             <span>
-//               <strong>Asignaruta : </strong> {boleta.aluMateria.nombre}
-//             </span>
-//             <br />
-
-//             <span>
-//               {" "}
-//               <strong>Horas Totales : </strong> {boleta.aluMateria.horas}
-//             </span>
-//             <br />
-
-//             <span>
-//               {" "}
-//               <strong>Faltas Permitidas : </strong>{" "}
-//               {boleta.aluMateria.faltas_permitidas}
-//             </span>
-//             <br />
-
-//             <span>
-//               {" "}
-//               <strong>Faltas Totales : </strong>{" "}
-//               {boleta.faltas_permitidas}
-//             </span>
-//             <br />
-
-//             <span>
-//               {" "}
-//               <strong>Grupo : </strong>
-//               {boleta.aluGrupo.clave_grupo} - {boleta.aluGrupo.turno}
-//             </span>
-//             <br />
-//             <span>
-//               {" "}
-//               <strong>Calificaciones : </strong>
-//               <br />
-//               <span>- Primer Bimestre </span>
-//               {boleta.aluCalificaciones.bimestre_uno}
-//               <br />
-//               <span>- Segundo Bimestre </span>
-//               {boleta.aluCalificaciones.bimestre_dos}
-//               <br />
-//               <span>- Ordinario </span>
-//               {boleta.aluCalificaciones.ordinario}
-//               <br />
-//               <span>- Promedio Bimestral </span>
-//               {boleta.aluCalificaciones.promedio_bimestral}
-//               <br />
-//               <span>- Promedio Final </span>
-//               {boleta.aluCalificaciones.promedio_final}
-//               <br />
-//               <span>- Extraordinario </span>
-//               {boleta.aluCalificaciones.extraordinario}
-//               <br />
-//               <span>- Título </span>
-//               {boleta.aluCalificaciones.titulo}
-//               <br />
-//               <span>- Insuficiencia </span>
-//               {boleta.aluCalificaciones.insuficiencia}
-//               <br />
-//             </span>
-//               <button>Imprimir</button>
-//           </li>
-//           <br />
-//         </div>
-//       ))}
-//     </ul>
-//   </div>
-
-// </div></div>

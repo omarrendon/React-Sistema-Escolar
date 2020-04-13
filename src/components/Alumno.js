@@ -39,18 +39,7 @@ export default class Alumno extends Component {
     });
   };
 
-  onSubmit = async e => {
-    e.preventDefault();
-    await axios.post("http://localhost:4000/alumno", {
-      nombres: this.state.alumno.nombres,
-      apellido_paterno: this.state.alumno.apellido_paterno,
-      apellido_materno: this.state.alumno.apellido_materno,
-      matricula: this.state.alumno.matricula,
-      fk_carrera: this.state.alumno.fk_carrera
-      // carrera : this.state.alumno.carrera
-    });
-    this.getData();
-  };
+  
 
   getData = async () => {
     const response = await axios.get("http://localhost:4000/alumno");
@@ -58,6 +47,34 @@ export default class Alumno extends Component {
       users: response.data
     });
     console.log(this.state.users);
+  };
+
+  onSubmit = async e => {
+    const { nombres, apellido_paterno, apellido_materno, matricula, fk_carrera} = this.state.alumno;
+    e.preventDefault();
+    
+    if ( nombres === "" || apellido_paterno === "" || apellido_materno === "" || 
+        matricula === "" ) {
+      alert("RELLENAR LOS CAMPOS VACIOS ");
+    } else {
+      await axios.post("http://localhost:4000/alumno", {
+        nombres: nombres,
+        apellido_paterno: apellido_paterno,
+        apellido_materno: apellido_materno,
+        matricula: matricula,
+        fk_carrera: fk_carrera
+      });
+      this.getData();
+      this.setState({
+        alumno: {
+          nombres: "",
+          apellido_paterno: "",
+          apellido_materno: "",
+          matricula: "",
+          fk_carrera: ""
+        }
+      })
+    }
   };
 
   deleteUser = async id_alumo => {

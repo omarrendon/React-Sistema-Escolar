@@ -14,6 +14,7 @@ export default class Materia extends Component {
     carreras: [],
     maestros: []
   };
+
   componentDidMount() {
     this.getCarrera();
     this.getMaestro();
@@ -54,17 +55,32 @@ export default class Materia extends Component {
   };
 
   onSubmit = async e => {
+    const { nombre, horas, faltas_permitidas, fk_maestro, fk_carrera} = this.state.materia
     e.preventDefault();
-    await axios.post("http://localhost:4000/materia", {
-      nombre: this.state.materia.nombre,
-      horas: this.state.materia.horas,
-      faltas_permitidas: this.state.materia.faltas_permitidas,
-      fk_maestro: this.state.materia.fk_maestro,
-      fk_carrera: this.state.materia.fk_carrera
-    });
-    this.getCarrera();
-    this.getMaestro();
-    this.getMateria();
+    if(nombre === "" || horas === "" || faltas_permitidas === "" || fk_maestro === "" || fk_carrera === "") {
+      alert("RELLENAR TODOS LOS CAPOS FALTANTES");
+    }else {
+
+      await axios.post("http://localhost:4000/materia", {
+        nombre: nombre,
+        horas: horas,
+        faltas_permitidas: faltas_permitidas,
+        fk_maestro: fk_maestro,
+        fk_carrera: fk_carrera
+      });
+      this.getCarrera();
+      this.getMaestro();
+      this.getMateria();
+      this.setState({
+        materia: {
+          nombre: "",
+          horas: "",
+          faltas_permitidas: "",
+          fk_maestro: "",
+          fk_carrera: ""
+        }
+      })
+    }
   };
 
   deleteUser = async id_materia => {
@@ -74,6 +90,7 @@ export default class Materia extends Component {
   };
 
   render() {
+    const { nombre, horas, faltas_permitidas, fk_maestro, fk_carrera} = this.state.materia
     return (
       <div className="row">
         <div className="col-md-6">
@@ -83,7 +100,7 @@ export default class Materia extends Component {
               <div className="form-group">
                 <br />
                 <input
-                  value={this.state.materia.nombre}
+                  value={nombre}
                   type="text"
                   placeholder="Nombre Asignatura"
                   name="nombre"
@@ -93,7 +110,7 @@ export default class Materia extends Component {
                 <br />
 
                 <input
-                  value={this.state.materia.horas}
+                  value={horas}
                   type="number"
                   placeholder=" Horas totales de la Asignatura"
                   name="horas"
@@ -103,7 +120,7 @@ export default class Materia extends Component {
                 <br />
 
                 <input
-                  value={this.state.materia.faltas_permitidas}
+                  value={faltas_permitidas}
                   type="number"
                   placeholder="Número de faltas permitidas"
                   name="faltas_permitidas"
@@ -114,7 +131,7 @@ export default class Materia extends Component {
 
                 <label htmlFor="">Licenciatura</label>
                 <select
-                  value={this.state.materia.fk_carrera}
+                  value={fk_carrera}
                   name="fk_carrera"
                   className="custom-select"
                   onChange={this.onChange}
@@ -132,7 +149,7 @@ export default class Materia extends Component {
                 <label htmlFor="">Docente a impartir la materia</label>
                 <select
                   name="fk_maestro"
-                  value={this.state.materia.fk_maestro}
+                  value={fk_maestro}
                   className="custom-select"
                   onChange={this.onChange}
                 >

@@ -35,15 +35,30 @@ export default class Maestro extends Component {
   };
 
   onSubmit = async e => {
+    const { nombres, apellido_paterno, apellido_materno, matricula, contrasenia} = this.state.maestro;
     e.preventDefault();
-    await axios.post("http://localhost:4000/maestro", {
-      nombres: this.state.maestro.nombres,
-      apellido_paterno: this.state.maestro.apellido_paterno,
-      apellido_materno: this.state.maestro.apellido_materno,
-      matricula: this.state.maestro.matricula,
-      contrasenia: this.state.maestro.contrasenia
-    });
-    this.getMaestros();
+    if ( nombres === "" || apellido_paterno === "" || apellido_materno === "" || 
+        matricula === "" || contrasenia === "") {
+      alert("RELLENAR LOS CAMPOS VACIOS ");
+    } else {
+      await axios.post("http://localhost:4000/maestro", {
+        nombres: nombres,
+        apellido_paterno: apellido_paterno,
+        apellido_materno: apellido_materno,
+        matricula: matricula,
+        contrasenia: contrasenia
+      });
+      this.getMaestros();
+      this.setState({
+        maestro: {
+          nombres: "",
+          apellido_paterno: "",
+          apellido_materno: "",
+          matricula: "",
+          contrasenia: ""
+        }
+      })
+    }
   };
 
   deleteUser = async id_maestro => {
