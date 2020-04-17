@@ -26,7 +26,7 @@ export default class AlumnoMateria extends Component {
   }
 
   getCalificaciones = async () => {
-    const response = await axios.get("http://localhost:4000/calificacion");
+    const response = await axios.get("http://localhost:8080/calificacion/listar");
     this.setState({
       calificaciones: response.data.data
     });
@@ -35,7 +35,7 @@ export default class AlumnoMateria extends Component {
   };
 
   getGrupos = async () => {
-    const response = await axios.get("http://localhost:4000/grupo");
+    const response = await axios.get("http://localhost:8080/grupos/listar");
     this.setState({
       grupos: response.data.data
     });
@@ -44,7 +44,7 @@ export default class AlumnoMateria extends Component {
   };
 
   getAlumnos = async () => {
-    const response = await axios.get("http://localhost:4000/alumno");
+    const response = await axios.get("http://localhost:8080/alumnos/listar");
     this.setState({
       alumnos: response.data
     });
@@ -53,7 +53,7 @@ export default class AlumnoMateria extends Component {
   };
 
   getMateria = async () => {
-    const response = await axios.get("http://localhost:4000/materia");
+    const response = await axios.get("http://localhost:8080/materias/listar");
     this.setState({
       materias: response.data.data
     });
@@ -62,7 +62,7 @@ export default class AlumnoMateria extends Component {
   };
 
   getAlumnoMateria = async () => {
-    const response = await axios.get("http://localhost:4000/AlumnoMateria");
+    const response = await axios.get("http://localhost:8080/alumnosmateria/listar");
     this.setState({
       content: response.data.data
     });
@@ -86,7 +86,7 @@ export default class AlumnoMateria extends Component {
       alert("RELLENAR TODOS LOS CAMPOS CORRECTAMENTE");
     } else {
 
-      await axios.post("http://localhost:4000/AlumnoMateria", {
+      await axios.post("http://localhost:8080/alumnosmateria/crear", {
         faltas_totales: faltas_totales,
         fk_alumno: fk_alumno,
         fk_materia: fk_materia,
@@ -104,7 +104,7 @@ export default class AlumnoMateria extends Component {
         <div className="row">
           <div className="col-md-12">
             <h2>Generar Boleta</h2>
-            <div class="dropdown-divider"></div>
+            <div className="dropdown-divider"></div>
             <div className="card card-body">
               <form onSubmit={this.onSubmit}>
                 <div className="form-group">
@@ -192,20 +192,20 @@ export default class AlumnoMateria extends Component {
                     className="form-control"
                     onChange={this.onChange}
                   />
-                  <div class="dropdown-divider"></div>
+                  <div className="dropdown-divider"></div>
                   <button type="submit" className="btn btn-success">
                     Guardar
                   </button>
                 </div>
               </form>
             </div>
-            <div class="dropdown-divider"></div>
+            <div className="dropdown-divider"></div>
           </div>
         </div>
         <div className="row">
           <div className="col-md-12">
             <h2>Imprimir Boleta</h2>
-            <div class="dropdown-divider"></div>
+            <div className="dropdown-divider"></div>
 
             <div className="row row-cols-1 row-cols-md-3">
               {this.state.content.map(boleta => (

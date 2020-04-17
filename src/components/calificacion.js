@@ -23,7 +23,7 @@ export default class calificacion extends Component {
   }
 
   getMateria = async () => {
-    const response = await axios.get("http://localhost:4000/materia");
+    const response = await axios.get("http://localhost:8080/materias/listar");
     this.setState({
       materias: response.data.data
     });
@@ -32,7 +32,7 @@ export default class calificacion extends Component {
   };
 
   getCalificaciones = async () => {
-    const response = await axios.get("http://localhost:4000/calificacion");
+    const response = await axios.get("http://localhost:8080/calificacion/listar");
     this.setState({
       calificaciones: response.data.data
     });
@@ -72,7 +72,7 @@ export default class calificacion extends Component {
     ) {
       alert("RELLENAR TODOS LOS CAMPOS FALTANTES");
     } else {
-      await axios.post("http://localhost:4000/calificacion", {
+      await axios.post("http://localhost:8080/calificacion/crear", {
         bimestre_uno: bimestre_uno,
         bimestre_dos: bimestre_dos,
         ordinario: ordinario,

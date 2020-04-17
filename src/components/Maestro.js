@@ -18,9 +18,9 @@ export default class Maestro extends Component {
   }
 
   getMaestros = async () => {
-    const response = await axios.get("http://localhost:4000/maestro");
+    const response = await axios.get("http://localhost:8080/maestros/listar");
     this.setState({
-      maestros: response.data.maestros
+      maestros: response.data
     });
     console.log(this.state.maestros);
   };
@@ -41,7 +41,7 @@ export default class Maestro extends Component {
         matricula === "" || contrasenia === "") {
       alert("RELLENAR LOS CAMPOS VACIOS ");
     } else {
-      await axios.post("http://localhost:4000/maestro", {
+      await axios.post("http://localhost:8080/maestros/crear", {
         nombres: nombres,
         apellido_paterno: apellido_paterno,
         apellido_materno: apellido_materno,
@@ -62,7 +62,7 @@ export default class Maestro extends Component {
   };
 
   deleteUser = async id_maestro => {
-    await axios.delete(`http://localhost:4000/maestro/${id_maestro}`);
+    await axios.delete(`http://localhost:8080/maestros/${id_maestro}`);
     this.getMaestros();
     console.log("USUARIO ELIMINADO :" + id_maestro);
   };
@@ -160,22 +160,3 @@ export default class Maestro extends Component {
     );
   }
 }
-//   <div className="map">
-//     {
-//       this.state.maestros.map( (maestro) =>(
-//         <div className="lista" key={maestro.id_maestro}>
-//         <li >
-//           <span>Nombres : {maestro.nombres}</span>
-//           <br/>
-//           <span>Apellido Paterno : {maestro.apellido_materno}</span>
-//           <br/>
-//           <span>Apellido Materno : {maestro.apellido_paterno}</span>
-//           <br/>
-//           <span>Matricula : {maestro.matricula}</span>
-//         </li>
-//         <button  onClick={ () => this.deleteUser(maestro.id_maestro)}>Eliminar</button>
-//         </div>
-//       ))
-//     }
-//   </div>
-// </div></div>

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Style from "./styles/alumno.module.css";
+
 
 export default class Alumno extends Component {
   state = {
     users: [],
     alumno: {
-      nombres: "",
+      nombre: "",
       apellido_paterno: "",
       apellido_materno: "",
       matricula: "",
@@ -21,12 +21,11 @@ export default class Alumno extends Component {
   }
 
   getCarrera = async () => {
-    const carrera = await axios.get("http://localhost:4000/carrera");
-    // this.state.carreras = carrera.data;
+    const carrera = await axios.get("http://localhost:8080/carreras/listar");
     this.setState({
       carreras: carrera.data
     });
-
+    console.log("CARRERAS");
     console.log(this.state.carreras);
   };
 
@@ -39,26 +38,26 @@ export default class Alumno extends Component {
     });
   };
 
-  
-
   getData = async () => {
-    const response = await axios.get("http://localhost:4000/alumno");
+    const response = await axios.get("http://localhost:8080/alumnos/listar");
     this.setState({
       users: response.data
     });
+    console.log("ALUMNOS");
     console.log(this.state.users);
   };
 
+
   onSubmit = async e => {
-    const { nombres, apellido_paterno, apellido_materno, matricula, fk_carrera} = this.state.alumno;
+    const { nombre, apellido_paterno, apellido_materno, matricula, fk_carrera} = this.state.alumno;
     e.preventDefault();
     
-    if ( nombres === "" || apellido_paterno === "" || apellido_materno === "" || 
+    if ( nombre === "" || apellido_paterno === "" || apellido_materno === "" || 
         matricula === "" ) {
       alert("RELLENAR LOS CAMPOS VACIOS ");
     } else {
-      await axios.post("http://localhost:4000/alumno", {
-        nombres: nombres,
+      await axios.post("http://localhost:8080/alumnos/crear", {
+        nombre: nombre,
         apellido_paterno: apellido_paterno,
         apellido_materno: apellido_materno,
         matricula: matricula,
@@ -67,7 +66,7 @@ export default class Alumno extends Component {
       this.getData();
       this.setState({
         alumno: {
-          nombres: "",
+          nombre: "",
           apellido_paterno: "",
           apellido_materno: "",
           matricula: "",
@@ -78,7 +77,7 @@ export default class Alumno extends Component {
   };
 
   deleteUser = async id_alumo => {
-    await axios.delete(`http://localhost:4000/alumno/${id_alumo}`);
+    await axios.delete(`http://localhost:8080/alumnos/borrar`);
     this.getData();
     console.log("USUARIO ELIMINADO :" + id_alumo);
   };
@@ -92,17 +91,17 @@ export default class Alumno extends Component {
               <div className="form-group">
                 <br />
                 <input
-                  className={Style.formgroup}
-                  value={this.state.alumno.nombres}
+                 
+                  value={this.state.alumno.nombre}
                   type="text"
                   placeholder="Nombres"
-                  name="nombres"
+                  name="nombre"
                   onChange={this.onChange}
                   className="form-control"
                 />
                 <br />
                 <input
-                  className={Style.formgroup}
+                  
                   value={this.state.alumno.apellido_paterno}
                   type="text"
                   placeholder=" Apellido Paterno"
@@ -112,7 +111,7 @@ export default class Alumno extends Component {
                 />
                 <br />
                 <input
-                  className={Style.formgroup}
+                
                   value={this.state.alumno.apellido_materno}
                   type="text"
                   placeholder="Apellido Materno"
@@ -122,7 +121,7 @@ export default class Alumno extends Component {
                 />
                 <br />
                 <input
-                  className={Style.formgroup}
+                 
                   value={this.state.alumno.matricula}
                   type="text"
                   placeholder="Matricula"
@@ -132,7 +131,7 @@ export default class Alumno extends Component {
                 />
                 <br />
                 <select
-                  className={Style.formgroup}
+                 
                   value={this.state.alumno.fk_carrera}
                   name="fk_carrera"
                   onChange={this.onChange}
@@ -146,7 +145,7 @@ export default class Alumno extends Component {
                   ))}
                 </select>
                 <br />
-                <div class="dropdown-divider"></div>
+                <div className="dropdown-divider"></div>
                 <button type="submit" className="btn btn-success">
                   Guardar
                 </button>
@@ -169,12 +168,13 @@ export default class Alumno extends Component {
               </thead>
               <tbody>
                 {this.state.users.map(usuario => (
-                  <tr key={usuario.id_alumo}>
-                    <td>{usuario.nombres}</td>
-                    <td>{usuario.apellido_paterno}</td>
-                    <td>{usuario.apellido_materno}</td>
+                  <tr key={usuario.matricula}>
+                    <td>{usuario.nombre}</td>
+                    <td>{usuario.apellido_pat}</td>
+                    <td>{usuario.apellido_mat}</td>
+                    <td>{usuario.nombre_carrera}</td>
                     <td>{usuario.matricula}</td>
-                    <td>{usuario.carrera.nombre}</td>
+                    {/* <td>{usuario.carrera.nombre}</td> */}
                     <td>
                       <button
                         onClick={() => this.deleteUser(usuario.id_alumo)}

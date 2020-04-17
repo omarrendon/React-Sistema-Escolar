@@ -22,7 +22,7 @@ export default class Materia extends Component {
   }
 
   getCarrera = async () => {
-    const carrera = await axios.get("http://localhost:4000/carrera");
+    const carrera = await axios.get("http://localhost:8080/carreras/listar");
     this.setState({
       carreras: carrera.data
     });
@@ -30,7 +30,7 @@ export default class Materia extends Component {
   };
 
   getMaestro = async () => {
-    const response = await axios.get("http://localhost:4000/maestro");
+    const response = await axios.get("http://localhost:8080/maestros/listar");
     this.setState({
       maestros: response.data.maestros
     });
@@ -38,7 +38,7 @@ export default class Materia extends Component {
   };
 
   getMateria = async () => {
-    const response = await axios.get("http://localhost:4000/materia");
+    const response = await axios.get("http://localhost:8080/materias/listar");
     this.setState({
       materias: response.data.data
     });
@@ -61,7 +61,7 @@ export default class Materia extends Component {
       alert("RELLENAR TODOS LOS CAPOS FALTANTES");
     }else {
 
-      await axios.post("http://localhost:4000/materia", {
+      await axios.post("http://localhost:8080/materias/crear", {
         nombre: nombre,
         horas: horas,
         faltas_permitidas: faltas_permitidas,
@@ -84,7 +84,7 @@ export default class Materia extends Component {
   };
 
   deleteUser = async id_materia => {
-    await axios.delete(`http://localhost:4000/materia/${id_materia}`);
+    await axios.delete(`http://localhost:8080/materias/${id_materia}`);
     this.getMateria();
     console.log("MATERIA ELIMINADA :" + id_materia);
   };

@@ -15,7 +15,7 @@ export default class Asistencias extends Component {
   }
 
   getCarrera = async () => {
-    const carrera = await axios.get("http://localhost:4000/carrera");
+    const carrera = await axios.get("http://localhost:8080/carreras/listar");
     // this.state.carreras = carrera.data;
     this.setState({
       carreras: carrera.data
@@ -24,7 +24,7 @@ export default class Asistencias extends Component {
   };
 
   getAlumno = async () => {
-    const response = await axios.get("http://localhost:4000/alumno");
+    const response = await axios.get("http://localhost:8080/alumnos/listar");
     this.setState({
       users: response.data
     });
@@ -32,9 +32,9 @@ export default class Asistencias extends Component {
   };
 
   getAsistencias = async () => {
-    const response = await axios.get("http://localhost:4000/asistencias");
+    const response = await axios.get("http://localhost:8080/asistencias/listar");
     this.setState({
-      asistencias: response.data.todas
+      asistencias: response.data
     });
     console.log(this.state.asistencias);
   };
