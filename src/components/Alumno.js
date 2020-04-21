@@ -49,20 +49,21 @@ export default class Alumno extends Component {
 
 
   onSubmit = async e => {
-    const { nombre, apellido_paterno, apellido_materno, matricula, fk_carrera} = this.state.alumno;
+    const { nombre, apellido_paterno, apellido_materno, matricula} = this.state.alumno;
     e.preventDefault();
     
+    const data = new FormData(e.target);
+    data.set('nombre' , data.get('nombre'));
+    data.set('apellido_paterno' , data.get('apellido_paterno'));
+    data.set("apellido_materno" , data.get("apellido_materno"));
+    data.set("matricula" , data.get("matricula"));
+    data.set("fk_carrera" , data.get('fk_carrera'));
+
     if ( nombre === "" || apellido_paterno === "" || apellido_materno === "" || 
         matricula === "" ) {
       alert("RELLENAR LOS CAMPOS VACIOS ");
     } else {
-      await axios.post("http://localhost:8080/alumnos/crear", {
-        nombre: nombre,
-        apellido_paterno: apellido_paterno,
-        apellido_materno: apellido_materno,
-        matricula: matricula,
-        fk_carrera: fk_carrera
-      });
+      await axios.post("http://localhost:8080/alumnos/crear", data);
       this.getData();
       this.setState({
         alumno: {
@@ -72,15 +73,20 @@ export default class Alumno extends Component {
           matricula: "",
           fk_carrera: ""
         }
-      })
+      });
     }
   };
 
   deleteUser = async id_alumo => {
-    await axios.delete(`http://localhost:8080/alumnos/borrar`);
+    await axios.delete('http://localhost:8080/alumnos/borrar' , {
+      params : {
+        id_alumo : id_alumo
+      }
+    });
     this.getData();
     console.log("USUARIO ELIMINADO :" + id_alumo);
   };
+
   render() {
     return (
       <div className="row">

@@ -23,12 +23,6 @@
     "eject": "react-scripts eject"
   },
   
-  "proxy" : {
-    "/alumnos" : {
-      "target" : "http://localhost:8080",
-      "ws" : true
-    }
-  },
 
   "eslintConfig": {
     "extends": "react-app"
