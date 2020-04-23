@@ -44,6 +44,7 @@ export default class Asistencias extends Component {
     console.log("asistencias");
     console.log(this.state.asistencias);
   };
+  
 
   render() {
     return (
@@ -55,7 +56,6 @@ export default class Asistencias extends Component {
             <th scope="col"> HORAS TOTALES</th>
             <th scope="col"> FALTAS PERMITIDAS</th>
             <th scope="col"> ALUMNO</th>
-            <th scope="col"> ELIMINAR</th>
             <th scope="col"> EDITAR</th>
           </tr>
         </thead>
@@ -69,9 +69,6 @@ export default class Asistencias extends Component {
               <td>
                 {asistencia.nombre} {asistencia.apellido_paterno}{" "}
                 {asistencia.apellido_materno}
-              </td>
-              <td>
-                <button className=" btn btn-danger"> Eliminar</button>
               </td>
               <td>
                 <button className="btn btn-success">Editar</button>

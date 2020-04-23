@@ -77,11 +77,10 @@ export default class Alumno extends Component {
     }
   };
 
-  deleteUser = async  id_alumo => {
-    await axios.get(`http://localhost:8080/alumnos/borrar/${id_alumo}` , {
-    });
+  deleteUser = async(id_alumno) => {
+    await axios.get(`http://localhost:8080/alumnos/borrar/${id_alumno}`)
     this.getData();
-    console.log("USUARIO ELIMINADO :" + id_alumo);
+    console.log("USUARIO ELIMINADO :" + id_alumno);
   };
 
   render() {
@@ -171,7 +170,7 @@ export default class Alumno extends Component {
               </thead>
               <tbody>
                 {this.state.users.map(usuario => (
-                  <tr key={usuario.matricula}>
+                  <tr key={usuario.id_alumno}>
                     <td>{usuario.nombre}</td>
                     <td>{usuario.apellido_pat}</td>
                     <td>{usuario.apellido_mat}</td>
@@ -180,7 +179,7 @@ export default class Alumno extends Component {
                     {/* <td>{usuario.carrera.nombre}</td> */}
                     <td>
                       <button
-                        onClick={() => this.deleteUser(usuario.id_alumo)}
+                        onClick={() => this.deleteUser(usuario.id_alumno)}
                         className="btn btn-danger"
                       >
                         Eliminar

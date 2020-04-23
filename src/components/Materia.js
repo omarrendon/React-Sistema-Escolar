@@ -90,7 +90,7 @@ export default class Materia extends Component {
   };
 
   deleteUser = async id_materia => {
-    await axios.delete(`http://localhost:8080/materias/${id_materia}`);
+    await axios.get(`http://localhost:8080/materias/borrar/${id_materia}`);
     this.getMateria();
     console.log("MATERIA ELIMINADA :" + id_materia);
   };

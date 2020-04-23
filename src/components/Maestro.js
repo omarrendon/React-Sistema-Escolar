@@ -63,8 +63,8 @@ export default class Maestro extends Component {
     }
   };
 
-  deleteUser = async id_maestro => {
-    await axios.delete(`http://localhost:8080/maestros/${id_maestro}`);
+  deleteUser = async(id_maestro) => {
+    await axios.get(`http://localhost:8080/maestros/borrar/${id_maestro}`);
     this.getMaestros();
     console.log("USUARIO ELIMINADO :" + id_maestro);
   };
