@@ -83,10 +83,14 @@ export default class AlumnoMateria extends Component {
 
   onChange = e => {
     this.setState({
-      Alumno_Materia: {
-        ...this.state.Alumno_Materia,
-        [e.target.name]: e.target.value
+      datos : {
+        ...this.state.datos,
+        [e.target.name] : e.target.value
       }
+      // Alumno_Materia: {
+      //   ...this.state.Alumno_Materia,
+      //   [e.target.name]: e.target.value
+      // }
     });
   };
 
