@@ -37,17 +37,19 @@ export default class Maestro extends Component {
   onSubmit = async e => {
     const { nombres, apellido_paterno, apellido_materno, matricula, contrasenia} = this.state.maestro;
     e.preventDefault();
+    
+    const data = new FormData(e.target);
+    data.set('nombres' , data.get('nombres'));
+    data.set('apellido_paterno' , data.get('apellido_paterno'));
+    data.set("apellido_materno" , data.get("apellido_materno"));
+    data.set("matricula" , data.get("matricula"));
+    data.set("contrasenia" , data.get('contrasenia'));
+    
     if ( nombres === "" || apellido_paterno === "" || apellido_materno === "" || 
         matricula === "" || contrasenia === "") {
       alert("RELLENAR LOS CAMPOS VACIOS ");
     } else {
-      await axios.post("http://localhost:8080/maestros/crear", {
-        nombres: nombres,
-        apellido_paterno: apellido_paterno,
-        apellido_materno: apellido_materno,
-        matricula: matricula,
-        contrasenia: contrasenia
-      });
+      await axios.post("http://localhost:8080/maestros/crear", data);
       this.getMaestros();
       this.setState({
         maestro: {

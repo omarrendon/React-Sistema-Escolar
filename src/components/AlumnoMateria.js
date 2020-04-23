@@ -28,19 +28,19 @@ export default class AlumnoMateria extends Component {
   getCalificaciones = async () => {
     const response = await axios.get("http://localhost:8080/calificacion/listar");
     this.setState({
-      calificaciones: response.data.data
+      calificaciones: response.data
     });
-    // console.log("CALIFICACIONES");
-    // console.log(this.state.calificaciones);
+    console.log("CALIFICACIONES");
+    console.log(this.state.calificaciones);
   };
 
   getGrupos = async () => {
     const response = await axios.get("http://localhost:8080/grupos/listar");
     this.setState({
-      grupos: response.data.data
+      grupos: response.data
     });
-    // console.log("GRUPOS");
-    // console.log(this.state.grupos);
+    console.log("GRUPOS");
+    console.log(this.state.grupos);
   };
 
   getAlumnos = async () => {
@@ -48,23 +48,23 @@ export default class AlumnoMateria extends Component {
     this.setState({
       alumnos: response.data
     });
-    // console.log("ALUMNOS");
-    // console.log(this.state.alumnos);
+    console.log("ALUMNOS");
+    console.log(this.state.alumnos);
   };
 
   getMateria = async () => {
     const response = await axios.get("http://localhost:8080/materias/listar");
     this.setState({
-      materias: response.data.data
+      materias: response.data
     });
-    // console.log("MATERIAS");
-    // console.log(this.state.materias);
+    console.log("MATERIAS");
+    console.log(this.state.materias);
   };
 
   getAlumnoMateria = async () => {
     const response = await axios.get("http://localhost:8080/alumnosmateria/listar");
     this.setState({
-      content: response.data.data
+      content: response.data
     });
     console.log("CONTENIDO BOLETA");
     console.log(this.state.content);
@@ -118,7 +118,7 @@ export default class AlumnoMateria extends Component {
                     onChange={this.onChange}
                   >
                     {this.state.alumnos.map(alumno => (
-                      <option value={alumno.id_alumo} key={alumno.id_alumo}>
+                      <option value={alumno.id_alumo} key={alumno.id_alumno}>
                         {alumno.nombres} {alumno.apellido_paterno}{" "}
                         {alumno.apellido_materno}
                       </option>
@@ -207,7 +207,7 @@ export default class AlumnoMateria extends Component {
             <h2>Imprimir Boleta</h2>
             <div className="dropdown-divider"></div>
 
-            <div className="row row-cols-1 row-cols-md-3">
+            {/* <div className="row row-cols-1 row-cols-md-3">
               {this.state.content.map(boleta => (
                 <div
                   className="card text-center bg-light mb-3"
@@ -288,7 +288,7 @@ export default class AlumnoMateria extends Component {
                   </div>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -25,7 +25,7 @@ export default class calificacion extends Component {
   getMateria = async () => {
     const response = await axios.get("http://localhost:8080/materias/listar");
     this.setState({
-      materias: response.data.data
+      materias: response.data
     });
     console.log("MATERIAS");
     console.log(this.state.materias);
@@ -34,7 +34,7 @@ export default class calificacion extends Component {
   getCalificaciones = async () => {
     const response = await axios.get("http://localhost:8080/calificacion/listar");
     this.setState({
-      calificaciones: response.data.data
+      calificaciones: response.data
     });
     console.log("calificaciones");
     console.log(this.state.calificaciones);
@@ -55,33 +55,34 @@ export default class calificacion extends Component {
       bimestre_dos,
       ordinario,
       promedio_bimestral,
-      promedio_final,
-      extraordinario,
-      titulo,
-      insuficiencia
+      promedio_final
     } = this.state.parciales;
+   
     e.preventDefault();
+    
+    const data = new FormData(e.target);
+    data.set('bimestre_uno' , data.get('bimestre_uno'));
+    data.set('bimestre_dos' , data.get('bimestre_dos'));
+    data.set('ordinario' , data.get('ordinario'));
+    data.set('promedio_bimestral' , data.get('promedio_bimestral'));
+    data.set('promedio_final' , data.get('promedio_final'));
+    data.set('extraordinario' , data.get('extraordinario'));
+    data.set('titulo' , data.get('titulo'));
+    data.set('insuficiencia' , data.get('insuficiencia'));
+    
     if (
       bimestre_uno === "" ||
       bimestre_dos === "" ||
       ordinario === "" ||
       promedio_bimestral === "" ||
-      promedio_final === "" ||
-      extraordinario === "" ||
-      titulo === ""
+      promedio_final === "" 
+      //||
+      // extraordinario === "" ||
+      // titulo === ""
     ) {
       alert("RELLENAR TODOS LOS CAMPOS FALTANTES");
     } else {
-      await axios.post("http://localhost:8080/calificacion/crear", {
-        bimestre_uno: bimestre_uno,
-        bimestre_dos: bimestre_dos,
-        ordinario: ordinario,
-        promedio_bimestral: promedio_bimestral,
-        promedio_final: promedio_final,
-        extraordinario: extraordinario,
-        titulo: titulo,
-        insuficiencia: insuficiencia
-      });
+      await axios.post("http://localhost:8080/calificacion/crear", data);
       this.setState({
         parciales: {
           bimestre_uno: "",

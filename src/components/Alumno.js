@@ -77,11 +77,8 @@ export default class Alumno extends Component {
     }
   };
 
-  deleteUser = async id_alumo => {
-    await axios.delete('http://localhost:8080/alumnos/borrar' , {
-      params : {
-        id_alumo : id_alumo
-      }
+  deleteUser = async  id_alumo => {
+    await axios.get(`http://localhost:8080/alumnos/borrar/${id_alumo}` , {
     });
     this.getData();
     console.log("USUARIO ELIMINADO :" + id_alumo);

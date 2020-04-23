@@ -5,7 +5,7 @@ export default class Asistencias extends Component {
   state = {
     carreras: [],
     users: [],
-    asistencias: []
+    asistencias: [],
   };
 
   componentDidMount() {
@@ -18,24 +18,30 @@ export default class Asistencias extends Component {
     const carrera = await axios.get("http://localhost:8080/carreras/listar");
     // this.state.carreras = carrera.data;
     this.setState({
-      carreras: carrera.data
+      carreras: carrera.data,
     });
+    console.log("Carreras");
     console.log(this.state.carreras);
   };
 
   getAlumno = async () => {
     const response = await axios.get("http://localhost:8080/alumnos/listar");
     this.setState({
-      users: response.data
+      users: response.data,
     });
+    console.log("alumnos");
+
     console.log(this.state.users);
   };
 
   getAsistencias = async () => {
-    const response = await axios.get("http://localhost:8080/asistencias/listar");
+    const response = await axios.get(
+      "http://localhost:8080/asistencias/listar"
+    );
     this.setState({
-      asistencias: response.data
+      asistencias: response.data,
     });
+    console.log("asistencias");
     console.log(this.state.asistencias);
   };
 
@@ -46,22 +52,30 @@ export default class Asistencias extends Component {
           <tr>
             <th scope="col"> ASIGNATURA</th>
             <th scope="col"> NÚMERO DE ASISTENCIAS</th>
+            <th scope="col"> HORAS TOTALES</th>
             <th scope="col"> FALTAS PERMITIDAS</th>
             <th scope="col"> ALUMNO</th>
+            <th scope="col"> ELIMINAR</th>
+            <th scope="col"> EDITAR</th>
           </tr>
         </thead>
         <tbody>
-          {this.state.asistencias.map(asistencia => (
-            <tr key={asistencia.id_asistencias}>
-              <td>{asistencia.asistenciasMateria.nombre}</td>
+          {this.state.asistencias.map((asistencia) => (
+            <tr key={asistencia.id_alumo}>
+              <td>{asistencia.nombre2}</td>
               <td>{asistencia.numero_asistencias}</td>
-              <td>{asistencia.asistenciasMateria.faltas_permitidas}</td>
+              <td>{asistencia.horas}</td>
+              <td>{asistencia.faltas_permitidas}</td>
               <td>
-                {asistencia.asistenciasAlumno.nombres}{" "}
-                {asistencia.asistenciasAlumno.apellido_paterno}{" "}
-                {asistencia.asistenciasAlumno.apellido_materno}
+                {asistencia.nombre} {asistencia.apellido_paterno}{" "}
+                {asistencia.apellido_materno}
               </td>
-              <td></td>
+              <td>
+                <button className=" btn btn-danger"> Eliminar</button>
+              </td>
+              <td>
+                <button className="btn btn-success">Editar</button>
+              </td>
             </tr>
           ))}
         </tbody>
