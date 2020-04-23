@@ -3,54 +3,65 @@ import axios from "axios";
 
 export default class AlumnoMateria extends Component {
   state = {
-    alumnos: [],
-    grupos: [],
-    calificaciones: [],
+    maestros : [],
+    carreras : [],
     materias: [],
-    Alumno_Materia: {
-      fk_alumno: "",
-      fk_materia: "",
-      fk_grupo: "",
-      fk_calificacion: "",
-      faltas_totales: ""
-    },
-    content: []
+    content: [],
+    periodos : [],
+    grupos : [],
+    datos :{
+      id_materia : "",
+      id_maestro : "",
+      id_grupo : "",
+      id_carrera : ""
+    }
   };
 
   componentDidMount() {
-    this.getAlumnos();
     this.getMateria();
-    this.getGrupos();
-    this.getCalificaciones();
     this.getAlumnoMateria();
+    this.getMaestro();
+    this.getCarrera();
+    this.getPeriodo();
+    this.getGrupo();
+  }
+  
+  getGrupo = async() => {
+    const response = await axios.get("http://localhost:8080/grupos/listar")
+    this.setState({
+      grupos : response.data
+    })
+    console.log("Grupos");
+    console.log(this.state.grupos);
+    
   }
 
-  getCalificaciones = async () => {
-    const response = await axios.get("http://localhost:8080/calificacion/listar");
+  getPeriodo = async() => {
+    const response = await axios.get("http://localhost:8080/periodos/listar");
     this.setState({
-      calificaciones: response.data
+      periodos : response.data
     });
-    console.log("CALIFICACIONES");
-    console.log(this.state.calificaciones);
-  };
+    console.log("PERIODOS");
+    console.log(this.state.periodos);
+  }
 
-  getGrupos = async () => {
-    const response = await axios.get("http://localhost:8080/grupos/listar");
+  getCarrera = async() => {
+    const response = await axios.get("http://localhost:8080/carreras/listar");
     this.setState({
-      grupos: response.data
+      carreras : response.data
     });
-    console.log("GRUPOS");
-    console.log(this.state.grupos);
-  };
+    console.log("Carreras");
+    console.log(this.state.carreras);
+  }
 
-  getAlumnos = async () => {
-    const response = await axios.get("http://localhost:8080/alumnos/listar");
+  getMaestro = async() => {
+    const response = await axios.get("http://localhost:8080/maestros/listar");
     this.setState({
-      alumnos: response.data
-    });
-    console.log("ALUMNOS");
-    console.log(this.state.alumnos);
-  };
+      maestros : response.data
+    })
+    console.log("Mastros");
+    console.log(this.state.maestros);
+  } 
 
   getMateria = async () => {
     const response = await axios.get("http://localhost:8080/materias/listar");
@@ -62,11 +73,11 @@ export default class AlumnoMateria extends Component {
   };
 
   getAlumnoMateria = async () => {
-    const response = await axios.get("http://localhost:8080/alumnosmateria/listar");
+    const response = await axios.get("http://localhost:8080/documentosGenerados/listar");
     this.setState({
       content: response.data
     });
-    console.log("CONTENIDO BOLETA");
+    console.log("CONTENIDO documento generado");
     console.log(this.state.content);
   };
 
@@ -80,23 +91,22 @@ export default class AlumnoMateria extends Component {
   };
 
   onSubmit = async e => {
-    const {faltas_totales, fk_alumno, fk_materia, fk_grupo, fk_calificacion} = this.state.Alumno_Materia
     e.preventDefault();
-    if( faltas_totales === "" || fk_alumno === "" || fk_materia === "" || fk_grupo === "" || fk_calificacion === "") {
-      alert("RELLENAR TODOS LOS CAMPOS CORRECTAMENTE");
-    } else {
+    const data = new FormData(e.target);
+    data.set('id_maestro' , data.get('id_maestro'));
+    data.set('id_materia' , data.get('id_materia'));
+    data.set('id_carrera' , data.get('id_carrera'));
+    data.set('id_maestro' , data.get('id_maestro'));
 
-      await axios.post("http://localhost:8080/alumnosmateria/crear", {
-        faltas_totales: faltas_totales,
-        fk_alumno: fk_alumno,
-        fk_materia: fk_materia,
-        fk_grupo: fk_grupo,
-        fk_calificacion: fk_calificacion
-      });
-      console.log("Creado");
-      this.getAlumnoMateria();
-    }
-  };
+    await axios.get(`http://localhost:8080/documentosGenerados/imprimir/${this.state.datos.id_materia}-${this.state.datos.id_maestro}-${this.state.datos.id_grupo}-${this.state.datos.id_carrera}`)
+    console.log("BOLETA LISTA!!");
+    
+    
+    // await axios.post("http://localhost:8080/documentosGenerados/crear", data);
+    //   console.log("Boleta Creada");
+
+  }
+  
 
   render() {
     return (
@@ -109,18 +119,18 @@ export default class AlumnoMateria extends Component {
               <form onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <span>
-                    <strong>Alumno</strong>
+                    <strong>Catedrático</strong>
                   </span>
                   <select
-                    name="fk_alumno"
-                    value={this.state.Alumno_Materia.fk_alumno}
+                    name="id_maestro"
+                    value={this.state.datos.id_maestro}
                     className="custom-select"
                     onChange={this.onChange}
                   >
-                    {this.state.alumnos.map(alumno => (
-                      <option value={alumno.id_alumo} key={alumno.id_alumno}>
-                        {alumno.nombres} {alumno.apellido_paterno}{" "}
-                        {alumno.apellido_materno}
+                    {this.state.maestros.map(maestro => (
+                      <option value={maestro.id_maestro} key={maestro.id_maestro}>
+                        {maestro.nombres} {maestro.apellido_paterno}{" "}
+                        {maestro.apellido_materno}
                       </option>
                     ))}
                   </select>
@@ -128,8 +138,8 @@ export default class AlumnoMateria extends Component {
                     <strong>Asignatura</strong>
                   </span>
                   <select
-                    name="fk_materia"
-                    value={this.state.Alumno_Materia.fk_materia}
+                    name="id_materia"
+                    value={this.state.datos.id_materia}
                     className="custom-select"
                     onChange={this.onChange}
                   >
@@ -142,69 +152,77 @@ export default class AlumnoMateria extends Component {
                       </option>
                     ))}
                   </select>
+
+                  <span>
+                    <strong>Licenciatura</strong>
+                  </span>
+                  <select
+                    name="id_carrera"
+                    value={this.state.datos.id_carrera}
+                    className="custom-select"
+                    onChange={this.onChange}
+                  >
+                    {this.state.carreras.map(carrera => (
+                      <option value={carrera.id_carrera} key={carrera.id_carrera}>
+                        {carrera.nombre}
+                      </option>
+                    ))}
+                  </select>
+                  
                   <span>
                     <strong>Grupo</strong>
                   </span>
                   <select
-                    name="fk_grupo"
-                    value={this.state.Alumno_Materia.fk_grupo}
+                    name="id_grupo"
+                    value={this.state.datos.id_grupo}
                     className="custom-select"
                     onChange={this.onChange}
                   >
                     {this.state.grupos.map(grupo => (
                       <option value={grupo.id_grupo} key={grupo.id_grupo}>
-                        {grupo.clave_grupo} - {grupo.turno}
+                        {grupo.clave_grupo}
                       </option>
                     ))}
                   </select>
-                  <span>
-                    <strong>Calificaciones</strong>
+
+
+
+
+
+                  {/* <span>
+                    <strong>Periodo Escolar</strong>
                   </span>
                   <select
-                    name="fk_calificacion"
-                    value={this.state.Alumno_Materia.fk_calificacion}
+                    name="fk_periodo"
+                    value={this.state.periodos.id_periodo}
                     className="custom-select"
                     onChange={this.onChange}
                   >
-                    {this.state.calificaciones.map(calificacion => (
-                      <option
-                        value={calificacion.id_calificacion}
-                        key={calificacion.id_calificacion}
-                      >
-                        - Primer Bimestre : {calificacion.bimestre_uno}- Segundo
-                        Bimestre : {calificacion.bimestre_dos}- Ordinario :{" "}
-                        {calificacion.ordinario}- Promedio Bimestral :{" "}
-                        {calificacion.promedio_bimestral}- Promedio Final :{" "}
-                        {calificacion.promedio_final}- Extraordinario :{" "}
-                        {calificacion.extraordinario}- Título :{" "}
-                        {calificacion.titulo}- Insuficiencia :{" "}
-                        {calificacion.insuficiencia}
+                    {this.state.periodos.map(periodo => (
+                      <option value={periodo.id_periodo} key={periodo.id_periodo}>
+                        {periodo.periodo} - {periodo.anio}
                       </option>
                     ))}
-                  </select>
-                  <span>
-                    <strong>Faltas Totales</strong>
-                  </span>
-                  <input
-                    value={this.state.Alumno_Materia.faltas_totales}
-                    type="number"
-                    name="faltas_totales"
-                    className="form-control"
-                    onChange={this.onChange}
-                  />
+                  </select> */}
                   <div className="dropdown-divider"></div>
-                  <button type="submit" className="btn btn-success">
-                    Guardar
+                  <button 
+                    type="submit" 
+                    className="btn btn-primary" 
+                    
+                  >
+                    Imprimir
                   </button>
                 </div>
               </form>
             </div>
-            <div className="dropdown-divider"></div>
+            
           </div>
         </div>
+
+
         <div className="row">
           <div className="col-md-12">
-            <h2>Imprimir Boleta</h2>
+            {/* <h2>Imprimir Boleta</h2> */}
             <div className="dropdown-divider"></div>
 
             {/* <div className="row row-cols-1 row-cols-md-3">
