@@ -56,7 +56,6 @@ export default class Asistencias extends Component {
             <th scope="col"> HORAS TOTALES</th>
             <th scope="col"> FALTAS PERMITIDAS</th>
             <th scope="col"> ALUMNO</th>
-            <th scope="col"> EDITAR</th>
           </tr>
         </thead>
         <tbody>
@@ -70,9 +69,9 @@ export default class Asistencias extends Component {
                 {asistencia.nombre} {asistencia.apellido_paterno}{" "}
                 {asistencia.apellido_materno}
               </td>
-              <td>
+              {/* <td>
                 <button className="btn btn-success">Editar</button>
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>

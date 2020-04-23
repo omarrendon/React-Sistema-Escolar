@@ -48,7 +48,7 @@ export default class Navigation extends Component {
               
               <a className="nav-item nav-link" href="http://localhost:8080/documentosGenerados/imprimir/3-2-4-2">Boleta generada</a>
 
-              <a className="nav-item nav-link" href="http://localhost:8080">Enlace a un directorio</a>
+              <a className="nav-item nav-link" href="http://localhost:8080"> Proyecto Oscar</a>
 
             </div>
           </div>

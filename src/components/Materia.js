@@ -205,9 +205,9 @@ export default class Materia extends Component {
                   </span>
                 </p>
                 <button className="btn btn-danger" onClick={() => this.deleteUser(materia.id_materia)}>Eliminar</button>
+                {/* <br/>
                 <br/>
-                <br/>
-                <button className="btn btn-success"> Editar</button>
+                <button className="btn btn-success"> Editar</button> */}
               </div>
             </div>
           ))}

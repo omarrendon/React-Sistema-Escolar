@@ -84,11 +84,11 @@ export default class Alumno extends Component {
     console.log("USUARIO ELIMINADO :" + id_alumno);
   };
 
-  updateUser = async(id_alumno) => {
-    this.setState ({
-      editar : true
-    })
-  }
+  // updateUser = async(id_alumno) => {
+  //   this.setState ({
+  //     editar : true
+  //   })
+  // }
 
   render() {
     return (
@@ -173,7 +173,7 @@ export default class Alumno extends Component {
                   <th scope="col"> Licenciatura</th>
                   <th scope="col"> Matricula</th>
                   <th scope="col"> Eliminar</th>
-                  <th scope="col"> Editar</th>
+                  {/* <th scope="col"> Editar</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -193,7 +193,7 @@ export default class Alumno extends Component {
                         Eliminar
                       </button>
                     </td>
-                    <td>
+                    {/* <td>
                     <button
                         onClick={() => this.updateUser(usuario.id_alumno)}
                         className="btn btn-success"
@@ -203,7 +203,7 @@ export default class Alumno extends Component {
                           this.state.editar ? 'true' : 'false'
                         }
                       </button>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>

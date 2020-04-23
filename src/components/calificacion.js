@@ -227,7 +227,7 @@ export default class calificacion extends Component {
                   <th scope="col"> Extraordinario</th>
                   <th scope="col"> Título</th>
                   <th scope="col"> Insuficiencia</th>
-                  <th scope="col"> Editar</th>
+                  {/* <th scope="col"> Editar</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -241,7 +241,7 @@ export default class calificacion extends Component {
                     <th>{calificacion.extraordinario}</th>
                     <th>{calificacion.titulo}</th>
                     <th>{calificacion.insuficiencia}</th>
-                    <th> <button className="btn btn-success"> Editar</button></th>
+                    {/* <th> <button className="btn btn-success"> Editar</button></th> */}
                   </tr>
                 ))}
               </tbody>
