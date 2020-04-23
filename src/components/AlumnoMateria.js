@@ -98,8 +98,9 @@ export default class AlumnoMateria extends Component {
     data.set('id_carrera' , data.get('id_carrera'));
     data.set('id_maestro' , data.get('id_maestro'));
 
-    await axios.get(`http://localhost:8080/documentosGenerados/imprimir/${this.state.datos.id_materia}-${this.state.datos.id_maestro}-${this.state.datos.id_grupo}-${this.state.datos.id_carrera}`)
-    console.log("BOLETA LISTA!!");
+    const imprimir = await axios.get(`http://localhost:8080/documentosGenerados/imprimir/${this.state.datos.id_materia}-${this.state.datos.id_maestro}-${this.state.datos.id_grupo}-${this.state.datos.id_carrera}`)
+    
+    console.log(imprimir.data);
     
     
     // await axios.post("http://localhost:8080/documentosGenerados/crear", data);

@@ -26,6 +26,7 @@ function App() {
           <Route path="/materia" component={Materia} />
           <Route path="/calificacion" component={calificacion} />
           <Route path="/boleta" component={AlumnoMateria} />
+         
         </div>
       </Router>
     </div>
