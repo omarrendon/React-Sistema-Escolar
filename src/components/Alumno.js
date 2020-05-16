@@ -10,15 +10,18 @@ export default class Alumno extends Component {
       apellido_paterno: "",
       apellido_materno: "",
       matricula: "",
-      fk_carrera: ""
+      fk_carrera: "",
+      fk_grupo: ""
     },
     carreras: [],
+    grupos: [],
     editar : false
   };
 
   componentDidMount() {
     this.getData();
     this.getCarrera();
+    this.getGrupo();
   }
 
   getCarrera = async () => {
@@ -29,6 +32,15 @@ export default class Alumno extends Component {
     console.log("CARRERAS");
     console.log(this.state.carreras);
   };
+
+  getGrupo = async () => {
+    const grupo = await axios.get("http://localhost:8080/grupos/listar")
+    this.setState({
+      grupos : grupo.data
+    });
+    console.log("GRUPOS");
+    console.log(this.state.grupos);
+  }; 
 
   onChange = e => {
     this.setState({
@@ -58,6 +70,7 @@ export default class Alumno extends Component {
     data.set('apellido_paterno' , data.get('apellido_paterno'));
     data.set("apellido_materno" , data.get("apellido_materno"));
     data.set("matricula" , data.get("matricula"));
+    data.set("fk_grupo" , data.get("fk_grupo"));
     data.set("fk_carrera" , data.get('fk_carrera'));
 
     if ( nombre === "" || apellido_paterno === "" || apellido_materno === "" || 
@@ -72,7 +85,8 @@ export default class Alumno extends Component {
           apellido_paterno: "",
           apellido_materno: "",
           matricula: "",
-          fk_carrera: ""
+          fk_carrera: "",
+          fk_grupo: ""
         }
       });
     }
@@ -84,11 +98,6 @@ export default class Alumno extends Component {
     console.log("USUARIO ELIMINADO :" + id_alumno);
   };
 
-  // updateUser = async(id_alumno) => {
-  //   this.setState ({
-  //     editar : true
-  //   })
-  // }
 
   render() {
     return (
@@ -140,6 +149,21 @@ export default class Alumno extends Component {
                 />
                 <br />
                 <select
+                  value={this.state.alumno.fk_grupo}
+                  name={"fk_grupo"}
+                  onChange={this.onChange}
+                  className="custom-select"
+                >
+                  {this.state.grupos.map( (grupo) => (
+                    <option value={grupo.id_grupo} key={grupo.id_grupo}>
+                      {" "}
+                      {grupo.clave_grupo}
+                    </option>
+                  ))}
+                </select>
+                <br></br>
+                <br />
+                <select
                  
                   value={this.state.alumno.fk_carrera}
                   name="fk_carrera"
@@ -172,8 +196,8 @@ export default class Alumno extends Component {
                   <th scope="col"> Apellido Materno</th>
                   <th scope="col"> Licenciatura</th>
                   <th scope="col"> Matricula</th>
+                  <th scope="col"> Grupo</th>
                   <th scope="col"> Eliminar</th>
-                  {/* <th scope="col"> Editar</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -184,7 +208,7 @@ export default class Alumno extends Component {
                     <td>{usuario.apellido_mat}</td>
                     <td>{usuario.nombre_carrera}</td>
                     <td>{usuario.matricula}</td>
-                    {/* <td>{usuario.carrera.nombre}</td> */}
+                    <td>{usuario.clave_grupo}</td>
                     <td>
                       <button
                         onClick={() => this.deleteUser(usuario.id_alumno)}
