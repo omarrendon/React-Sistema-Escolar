@@ -28,7 +28,7 @@ export default class Asistencias extends Component {
     const response = await axios.get("http://localhost:8080/alumnos/listar");
     this.setState({
       users: response.data,
-    });
+    }); 
     console.log("alumnos");
 
     console.log(this.state.users);
