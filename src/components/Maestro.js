@@ -116,7 +116,7 @@ export default class Maestro extends Component {
                 <br />
                 <input
                   value={this.state.maestro.contrasenia}
-                  type="password"
+                  type="text"
                   placeholder=" Contraseña "
                   name="contrasenia"
                   className="form-control"

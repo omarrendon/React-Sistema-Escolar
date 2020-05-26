@@ -28,7 +28,7 @@ export default class Asistencias extends Component {
     const response = await axios.get("http://localhost:8080/alumnos/listar");
     this.setState({
       users: response.data,
-    }); 
+    });
     console.log("alumnos");
 
     console.log(this.state.users);
@@ -52,7 +52,7 @@ export default class Asistencias extends Component {
       <div className="row">
         <div className="col-md-12">
           <div className="card card-body">
-            <p className="h3">Seleccionar Licenciatura</p>
+            <p className="h3">Seleccionar Licenciatura4</p>
             <form onSubmit={this.handleSubmit}> 
               <div className="form-gropup">
                 <select

@@ -11,27 +11,20 @@ export default class Alumno extends Component {
       apellido_materno: "",
       matricula: "",
       fk_carrera: "",
-      fk_grupo: ""
+      fk_grupo: "",
+      users : "",
+      pass : ''
     },
     carreras: [],
-    grupos: [],
+    grupos : [],
     editar : false
-  };
+  }; 
 
   componentDidMount() {
     this.getData();
     this.getCarrera();
     this.getGrupo();
   }
-
-  getCarrera = async () => {
-    const carrera = await axios.get("http://localhost:8080/carreras/listar");
-    this.setState({
-      carreras: carrera.data
-    });
-    console.log("CARRERAS");
-    console.log(this.state.carreras);
-  };
 
   getGrupo = async () => {
     const grupo = await axios.get("http://localhost:8080/grupos/listar")
@@ -41,6 +34,15 @@ export default class Alumno extends Component {
     console.log("GRUPOS");
     console.log(this.state.grupos);
   }; 
+
+  getCarrera = async () => {
+    const carrera = await axios.get("http://localhost:8080/carreras/listar");
+    this.setState({
+      carreras: carrera.data
+    });
+    console.log("CARRERAS");
+    console.log(this.state.carreras);
+  };
 
   onChange = e => {
     this.setState({
@@ -62,19 +64,22 @@ export default class Alumno extends Component {
 
 
   onSubmit = async e => {
-    const { nombre, apellido_paterno, apellido_materno, matricula} = this.state.alumno;
+    const { nombre, apellido_paterno, apellido_materno, matricula, users, pass} = this.state.alumno;
     e.preventDefault();
     
     const data = new FormData(e.target);
+   
     data.set('nombre' , data.get('nombre'));
     data.set('apellido_paterno' , data.get('apellido_paterno'));
     data.set("apellido_materno" , data.get("apellido_materno"));
     data.set("matricula" , data.get("matricula"));
+    data.set("users" , data.get("users"));
+    data.set("pass" , data.get("pass"));
     data.set("fk_grupo" , data.get("fk_grupo"));
     data.set("fk_carrera" , data.get('fk_carrera'));
 
     if ( nombre === "" || apellido_paterno === "" || apellido_materno === "" || 
-        matricula === "" ) {
+        matricula === "" || users === "" || pass === "" ) {
       alert("RELLENAR LOS CAMPOS VACIOS ");
     } else {
       await axios.post("http://localhost:8080/alumnos/crear", data);
@@ -86,7 +91,9 @@ export default class Alumno extends Component {
           apellido_materno: "",
           matricula: "",
           fk_carrera: "",
-          fk_grupo: ""
+          fk_grupo: "",
+          users : "", 
+          pass : ""
         }
       });
     }
@@ -97,7 +104,6 @@ export default class Alumno extends Component {
     this.getData();
     console.log("USUARIO ELIMINADO :" + id_alumno);
   };
-
 
   render() {
     return (
@@ -147,7 +153,29 @@ export default class Alumno extends Component {
                   onChange={this.onChange}
                   className="form-control"
                 />
-                <br />
+                <br/>
+
+                <input     
+                  value={this.state.alumno.users}
+                  type="text"
+                  placeholder="Usuario del Alumno"
+                  name="users"
+                  onChange={this.onChange}
+                  className="form-control"
+                />
+                <br/>
+
+                <input
+                 
+                  value={this.state.alumno.pass}
+                  type="text"
+                  placeholder="Contrasena del Alumno"
+                  name="pass"
+                  onChange={this.onChange}
+                  className="form-control"
+                />
+                <br/>
+
                 <select
                   value={this.state.alumno.fk_grupo}
                   name={"fk_grupo"}
@@ -158,10 +186,15 @@ export default class Alumno extends Component {
                     <option value={grupo.id_grupo} key={grupo.id_grupo}>
                       {" "}
                       {grupo.clave_grupo}
+                      {" "}
+                      {grupo.clave_cuatrimestre}
+                      {" "}
+                      {grupo.turno}
                     </option>
                   ))}
                 </select>
-                <br></br>
+             
+                <br />
                 <br />
                 <select
                  
@@ -178,6 +211,7 @@ export default class Alumno extends Component {
                   ))}
                 </select>
                 <br />
+
                 <div className="dropdown-divider"></div>
                 <button type="submit" className="btn btn-success">
                   Guardar
@@ -198,6 +232,7 @@ export default class Alumno extends Component {
                   <th scope="col"> Matricula</th>
                   <th scope="col"> Grupo</th>
                   <th scope="col"> Eliminar</th>
+                  {/* <th scope="col"> Editar</th> */}
                 </tr>
               </thead>
               <tbody>
