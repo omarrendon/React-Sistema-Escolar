@@ -10,7 +10,7 @@ import Home from "./components/Home";
 import Asistencias from "./components/Asistencias";
 import Materia from "./components/Materia";
 import AlumnoMateria from "./components/AlumnoMateria";
-import calificacion from "./components/calificacion";
+import Login from "./components/Login";
 
 function App() {
   return (
@@ -24,9 +24,8 @@ function App() {
           <Route path="/alumno" component={Alumno} />
           <Route path="/asistencias" component={Asistencias} />
           <Route path="/materia" component={Materia} />
-          <Route path="/calificacion" component={calificacion} />
-          <Route path="/boleta" component={AlumnoMateria} />
-         
+          <Route path="/calificacion" component={AlumnoMateria} />
+          <Route path="/login" component={Login} />
         </div>
       </Router>
     </div>

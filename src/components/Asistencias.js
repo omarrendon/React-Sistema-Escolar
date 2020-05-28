@@ -6,17 +6,18 @@ export default class Asistencias extends Component {
     carreras: [],
     users: [],
     asistencias: [],
+    carreraGrupos: [],
+    asistenciasGrupos: []
   };
 
   componentDidMount() {
     this.getCarrera();
-    this.getAlumno();
     this.getAsistencias();
+    this.getAsistenciasByGruop();
   }
 
   getCarrera = async () => {
     const carrera = await axios.get("http://localhost:8080/carreras/listar");
-    // this.state.carreras = carrera.data;
     this.setState({
       carreras: carrera.data,
     });
@@ -24,15 +25,26 @@ export default class Asistencias extends Component {
     console.log(this.state.carreras);
   };
 
-  getAlumno = async () => {
-    const response = await axios.get("http://localhost:8080/alumnos/listar");
+  getCarrerasByGroup = async (id_carrera) => {
+    const idCarrera = await axios.get(
+      "http://localhost:8080/carreras/grupos?id_carrera=" + id_carrera
+    );
     this.setState({
-      users: response.data,
+      carreraGrupos: idCarrera.data,
     });
-    console.log("alumnos");
-
-    console.log(this.state.users);
+    console.log("CARRERAS_GRUPOS");
+    console.log(this.state.carreraGrupos);
   };
+
+  getAsistenciasByGruop = async (id_grupo) => {
+    const idGrupo = await axios.get("http://localhost:8080/grupos/asistencias?id_grupo=1");
+    this.setState({
+      asistenciasGrupos : idGrupo.data
+    }); 
+    console.log("ASISTENCIAS_GRUPO");
+    console.log(this.state.asistenciasGrupos);
+    
+  }
 
   getAsistencias = async () => {
     const response = await axios.get(
@@ -44,53 +56,52 @@ export default class Asistencias extends Component {
     console.log("asistencias");
     console.log(this.state.asistencias);
   };
-  
 
   render() {
     return (
-      <div className="container">
-      <div className="row">
-        <div className="col-md-12">
-          <div className="card card-body">
-            <p className="h3">Seleccionar Licenciatura4</p>
-            <form onSubmit={this.handleSubmit}> 
-              <div className="form-gropup">
-                <select
-                  className="custom-select"
-                  name="carreras"
-                  // value={this.state.carreras}
-                  // onChange={this.onChange}
-                >
-                  {this.state.carreras.map((carrera) => (
-                    <option
-                      value={carrera.id_carrera}
-                      key={carrera.id_carrera}
-                    >
-                      {carrera.nombre}
-                    </option>
-                  ))}
-                </select>
-                <div className="dropdown-divider"></div>
-                <button type="submit" className="btn btn-success">
-                Guardar
-              </button>
-              </div>
-            </form>
+      <div className="container p-4">
+        <div className="row">
+          <div className="col-md-12">
+            <div className="card card-body">
+              <p className="h3 text-center">Seleccionar Licenciatura</p>
+              <ul className=" list-group">
+                {this.state.carreras.map((carrera) => (
+                  <li
+                    className="list-group-item"
+                    key={carrera.id_carrera}
+                    onClick={() => this.getCarrerasByGroup(carrera.id_carrera)}
+                  >
+                    {carrera.nombre}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-      
-      <div className="dropdown-divider"></div>
-      
-      <div className="row">
-        <div className="col-md-12">
-          <div className="card card-body">
-            <p className="h3">Sleccionar Grupo</p>
 
+        <div className="dropdown-divider"></div>
+
+        <div className="row">
+          <div className="col-md-12">
+            <div className="card card-body">
+              <p className="h3 text-center">Calificar Grupo</p>
+              <div className="container">
+                {
+                  this.state.carreraGrupos.map( (id) => (
+                    <div className="card card-body" key={id.clave_grupo}>
+                      <p>GRUOPO : {id.clave_grupo}</p>
+                      {" "}
+                      <p>CLAVE LICENCIATURA : {id.clave_cuatrimestre}</p>
+                      {" "}
+                      <p>AULA : {id.aula}</p>
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     );
   }
 }

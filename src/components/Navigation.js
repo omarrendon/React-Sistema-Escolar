@@ -9,19 +9,7 @@ export default class Navigation extends Component {
           <Link to={"/"} className="navbar-brand">
             SISTEMA DE CALIFICACIONES
           </Link>
-
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div className="navbar" id="navbarNavAltMarkup">
             <div className="navbar-nav ml-auto">
               <Link to={"/alumno"} className="nav-item nav-link">
                 Alumno{" "}
@@ -49,8 +37,8 @@ export default class Navigation extends Component {
               <a className="nav-item nav-link" href="http://localhost:8080/documentosGenerados/imprimir/3-2-4-2">Boleta generada</a>
 
               <a className="nav-item nav-link" href="http://localhost:8080"> Proyecto Oscar</a>
-
-            </div>
+              <Link to={"/login"} className="nav-item nav-link" > Login </Link>
+           </div>
           </div>
         </div>
       </nav>
