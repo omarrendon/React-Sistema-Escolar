@@ -107,9 +107,7 @@ export default class AlumnoMateria extends Component {
     console.log(imprimir.data);
     
     
-    // await axios.post("http://localhost:8080/documentosGenerados/crear", data);
-    //   console.log("Boleta Creada");
-
+  
   }
   
 
@@ -117,7 +115,7 @@ export default class AlumnoMateria extends Component {
     return (
       <div className="">
         <div className="row">
-          <div className="col-md-12">
+          <div className="col-12 col-sm-12 col-md-12">
             <h2>Generar Boleta</h2>
             <div className="dropdown-divider"></div>
             <div className="card card-body">
@@ -190,25 +188,6 @@ export default class AlumnoMateria extends Component {
                     ))}
                   </select>
 
-
-
-
-
-                  {/* <span>
-                    <strong>Periodo Escolar</strong>
-                  </span>
-                  <select
-                    name="fk_periodo"
-                    value={this.state.periodos.id_periodo}
-                    className="custom-select"
-                    onChange={this.onChange}
-                  >
-                    {this.state.periodos.map(periodo => (
-                      <option value={periodo.id_periodo} key={periodo.id_periodo}>
-                        {periodo.periodo} - {periodo.anio}
-                      </option>
-                    ))}
-                  </select> */}
                   <div className="dropdown-divider"></div>
                   <button 
                     type="submit" 
@@ -227,91 +206,9 @@ export default class AlumnoMateria extends Component {
 
         <div className="row">
           <div className="col-md-12">
-            {/* <h2>Imprimir Boleta</h2> */}
+            <h2>Imprimir Boleta</h2>
             <div className="dropdown-divider"></div>
 
-            {/* <div className="row row-cols-1 row-cols-md-3">
-              {this.state.content.map(boleta => (
-                <div
-                  className="card text-center bg-light mb-3"
-                  key={boleta.id_alumno_materia}
-                >
-                  <div className="card-body">
-                    <h5 className="card-title">
-                      <span>
-                        <strong>Alumno : </strong> {boleta.aluAlumno.nombres}{" "}
-                        {boleta.aluAlumno.apellido_paterno}{" "}
-                        {boleta.aluAlumno.apellido_materno}
-                      </span>
-                      <br />
-                      <span>
-                        <strong>Asignaruta : </strong>{" "}
-                        {boleta.aluMateria.nombre}
-                      </span>
-                    </h5>
-                    <p className="card-text">
-                      <span>
-                        {" "}
-                        <strong>Horas Totales : </strong>{" "}
-                        {boleta.aluMateria.horas}
-                      </span>
-                      <br />
-
-                      <span>
-                        {" "}
-                        <strong>Faltas Permitidas : </strong>{" "}
-                        {boleta.aluMateria.faltas_permitidas}
-                      </span>
-                      <br />
-
-                      <span>
-                        {" "}
-                        <strong>Faltas Totales : </strong>{" "}
-                        {boleta.faltas_permitidas}
-                      </span>
-                      <br />
-
-                      <span>
-                        {" "}
-                        <strong>Grupo : </strong>
-                        {boleta.aluGrupo.clave_grupo} - {boleta.aluGrupo.turno}
-                      </span>
-                      <br />
-                      <span>
-                        {" "}
-                        <strong>Calificaciones : </strong>
-                        <br />
-                        <span>- Primer Bimestre </span>
-                        {boleta.aluCalificaciones.bimestre_uno}
-                        <br />
-                        <span>- Segundo Bimestre </span>
-                        {boleta.aluCalificaciones.bimestre_dos}
-                        <br />
-                        <span>- Ordinario </span>
-                        {boleta.aluCalificaciones.ordinario}
-                        <br />
-                        <span>- Promedio Bimestral </span>
-                        {boleta.aluCalificaciones.promedio_bimestral}
-                        <br />
-                        <span>- Promedio Final </span>
-                        {boleta.aluCalificaciones.promedio_final}
-                        <br />
-                        <span>- Extraordinario </span>
-                        {boleta.aluCalificaciones.extraordinario}
-                        <br />
-                        <span>- Título </span>
-                        {boleta.aluCalificaciones.titulo}
-                        <br />
-                        <span>- Insuficiencia </span>
-                        {boleta.aluCalificaciones.insuficiencia}
-                        <br />
-                      </span>
-                      <button className="btn btn-primary">Imprimir</button>
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div> */}
           </div>
         </div>
       </div>

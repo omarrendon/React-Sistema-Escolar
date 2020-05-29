@@ -108,7 +108,7 @@ export default class Alumno extends Component {
   render() {
     return (
       <div className="row">
-        <div className="col-md-5">
+        <div className="col-12 col-sm-12 col-md-5">
           <div className="card card-body">
             <h3>REGISTRO DE ALUMNOS</h3>
             <form onSubmit={this.onSubmit}>
@@ -220,7 +220,11 @@ export default class Alumno extends Component {
             </form>
           </div>
         </div>
-        <div className="col-md-7">
+        
+        
+        <hr/>
+        
+        <div className="col-12 col-sm-12 col-md-7">
           <div className="list-group">
             <table className="table">
               <thead className="thead-dark">

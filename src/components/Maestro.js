@@ -72,7 +72,7 @@ export default class Maestro extends Component {
   render() {
     return (
       <div className="row">
-        <div className="col-md-4">
+        <div className="col-12 col-sm-12 col-md-4">
           <div className="card card-body">
             <h3>RESGISTRO DOCENTE</h3>
             <form onSubmit={this.onSubmit}>
@@ -130,7 +130,7 @@ export default class Maestro extends Component {
             </form>
           </div>
         </div>
-        <div className="col-md-8">
+        <div className="col-8  col-sm-12 col-md-8">
           <table className="table">
           <thead className="thead-dark">
                 <tr>

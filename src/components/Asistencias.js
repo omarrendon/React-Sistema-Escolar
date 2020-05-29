@@ -13,7 +13,7 @@ export default class Asistencias extends Component {
   componentDidMount() {
     this.getCarrera();
     this.getAsistencias();
-    this.getAsistenciasByGruop();
+    // this.getAsistenciasByGruop();
   }
 
   getCarrera = async () => {
@@ -36,17 +36,19 @@ export default class Asistencias extends Component {
     console.log(this.state.carreraGrupos);
   };
 
-  getAsistenciasByGruop = async (id_grupo) => {
-    const idGrupo = await axios.get("http://localhost:8080/grupos/asistencias?id_grupo=1");
-    this.setState({
-      asistenciasGrupos : idGrupo.data
-    }); 
-    console.log("ASISTENCIAS_GRUPO");
-    console.log(this.state.asistenciasGrupos);
+  getAsistenciasByGruop =  (id_grupo) => {
+    console.log(id_grupo);
+    
+    // const idGrupo = await axios.get("http://localhost:8080/grupos/asistencias?id_grupo=1");
+    // this.setState({
+    //   asistenciasGrupos : idGrupo.data
+    // }); 
+    // console.log("ASISTENCIAS_GRUPO");
+    // console.log(this.state.asistenciasGrupos);
     
   }
 
-  getAsistencias = async () => {
+   getAsistencias = async () => {
     const response = await axios.get(
       "http://localhost:8080/asistencias/listar"
     );
@@ -60,8 +62,8 @@ export default class Asistencias extends Component {
   render() {
     return (
       <div className="container p-4">
-        <div className="row">
-          <div className="col-md-12">
+        <div className="row justify-content-md-center">
+          <div className="col-12 col-sm-12 col-md-12">
             <div className="card card-body">
               <p className="h3 text-center">Seleccionar Licenciatura</p>
               <ul className=" list-group">
@@ -81,14 +83,14 @@ export default class Asistencias extends Component {
 
         <div className="dropdown-divider"></div>
 
-        <div className="row">
-          <div className="col-md-12">
+        <div className="row justify-content-md-center">
+          <div className="col-12 col-sm-12 col-md-12">
             <div className="card card-body">
               <p className="h3 text-center">Calificar Grupo</p>
               <div className="container">
                 {
                   this.state.carreraGrupos.map( (id) => (
-                    <div className="card card-body" key={id.clave_grupo}>
+                    <div className="card card-body" key={id.clave_grupo} onClick={() => this.getAsistenciasByGruop(id.id_grupo)} >
                       <p>GRUOPO : {id.clave_grupo}</p>
                       {" "}
                       <p>CLAVE LICENCIATURA : {id.clave_cuatrimestre}</p>

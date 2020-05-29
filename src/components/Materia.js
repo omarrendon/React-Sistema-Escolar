@@ -9,70 +9,82 @@ export default class Materia extends Component {
       horas: "",
       faltas_permitidas: "",
       fk_maestro: "",
-      fk_carrera: ""
+      fk_carrera: "",
+      fk_grupo : ""
     },
     carreras: [],
-    maestros: []
+    maestros: [],
+    grupos: []
   };
 
   componentDidMount() {
     this.getCarrera();
     this.getMaestro();
     this.getMateria();
+    this.getGrupo();
   }
+
+  getGrupo = async () => {
+    const grupo = await axios.get("http://localhost:8080/grupos/listar")
+    this.setState({
+      grupos : grupo.data
+    });
+    console.log("GRUPOS");
+    console.log(this.state.grupos);
+  }; 
 
   getCarrera = async () => {
     const carrera = await axios.get("http://localhost:8080/carreras/listar");
     this.setState({
-      carreras: carrera.data
+      carreras: carrera.data,
     });
-    console.log('Carreras');
+    console.log("Carreras");
     console.log(this.state.carreras);
   };
 
   getMaestro = async () => {
     const response = await axios.get("http://localhost:8080/maestros/listar");
     this.setState({
-      maestros: response.data
+      maestros: response.data,
     });
-    console.log('Maestro');
-    
+    console.log("Maestro");
+
     console.log(this.state.maestros);
   };
 
   getMateria = async () => {
     const response = await axios.get("http://localhost:8080/materias/listar");
     this.setState({
-      materias: response.data
+      materias: response.data,
     });
-    console.log('Materias');
+    console.log("Materias");
     console.log(this.state.materias);
   };
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({
       materia: {
         ...this.state.materia,
-        [e.target.name]: e.target.value
-      }
+        [e.target.name]: e.target.value,
+      },
     });
   };
 
-  onSubmit = async e => {
-    const { nombre, horas, faltas_permitidas} = this.state.materia
+  onSubmit = async (e) => {
+    const { nombre, horas, faltas_permitidas } = this.state.materia;
     e.preventDefault();
-    
+
     const data = new FormData(e.target);
-    data.set('nombre' , data.get('nombre'));
-    data.set('horas' , data.get('horas'));
-    data.set('faltas_permitidas' , data.get('faltas_permitidas'));
-    data.set('fk_maestro' , data.get('fk_maestro'));
-    data.set('fk_carrera' , data.get('fk_carrera'));
+    data.set("nombre", data.get("nombre"));
+    data.set("horas", data.get("horas"));
+    data.set("faltas_permitidas", data.get("faltas_permitidas"));
+    data.set("fk_maestro", data.get("fk_maestro"));
+    data.set("fk_carrera", data.get("fk_carrera"));
+    data.set("fk_grupo", data.get("fk_grupo"));
 
-    if(nombre === "" || horas === "" || faltas_permitidas === "" ) {
+    if (nombre === "" || horas === "" || faltas_permitidas === "") {
       alert("RELLENAR TODOS LOS CAPOS FALTANTES");
-    }else {
-
+    } else {
       await axios.post("http://localhost:8080/materias/crear", data);
       this.getCarrera();
       this.getMaestro();
@@ -83,23 +95,31 @@ export default class Materia extends Component {
           horas: "",
           faltas_permitidas: "",
           fk_maestro: "",
-          fk_carrera: ""
-        }
-      })
+          fk_carrera: "",
+          fk_grupo: ""
+        },
+      });
     }
   };
 
-  deleteUser = async id_materia => {
+  deleteUser = async (id_materia) => {
     await axios.get(`http://localhost:8080/materias/borrar/${id_materia}`);
     this.getMateria();
     console.log("MATERIA ELIMINADA :" + id_materia);
   };
 
   render() {
-    const { nombre, horas, faltas_permitidas, fk_maestro, fk_carrera} = this.state.materia
+    const {
+      nombre,
+      horas,
+      faltas_permitidas,
+      fk_maestro,
+      fk_carrera,
+      fk_grupo
+    } = this.state.materia;
     return (
       <div className="row">
-        <div className="col-md-6">
+        <div className="col-12 col-sm-12 col-md-6">
           <div className="card card-body">
             <h3>Registro de Asignaturas</h3>
             <form onSubmit={this.onSubmit}>
@@ -142,13 +162,35 @@ export default class Materia extends Component {
                   className="custom-select"
                   onChange={this.onChange}
                 >
-                  {this.state.carreras.map(lic => (
+                  {this.state.carreras.map((lic) => (
                     <option value={lic.id_carrera} key={lic.id_carrera}>
                       {" "}
                       {lic.nombre}
                     </option>
                   ))}
                 </select>
+
+                <br />
+
+                <label htmlFor="">Grupo</label>
+                <select
+                  value={fk_grupo}
+                  name="fk_grupo"
+                  className="custom-select"
+                  onChange={this.onChange}
+                >
+                  {this.state.grupos.map((grupo) => (
+                    <option value={grupo.id_grupo} key={grupo.id_grupo}>
+                      {" "}
+                      {grupo.clave_grupo}
+                      {" "}
+                      {grupo.clave_cuatrimestre}
+                      {" "}
+                      {grupo.turno}
+                    </option>
+                  ))}
+                </select>
+               
                 <br />
                 <br />
 
@@ -159,7 +201,7 @@ export default class Materia extends Component {
                   className="custom-select"
                   onChange={this.onChange}
                 >
-                  {this.state.maestros.map(maestro => (
+                  {this.state.maestros.map((maestro) => (
                     <option value={maestro.id_maestro} key={maestro.id_maestro}>
                       {" "}
                       {maestro.nombres} {maestro.apellido_paterno}{" "}
@@ -176,8 +218,8 @@ export default class Materia extends Component {
             </form>
           </div>
         </div>
-        <div className="col-md-6">
-          {this.state.materias.map(materia => (
+        <div className="col-12 col-sm-12 col-md-6">
+          {this.state.materias.map((materia) => (
             <div className="card bg-light mb-3" key={materia.id_materia}>
               <div className="card-header">{materia.nombre_carrera}</div>
               <div className="card-body">
@@ -186,8 +228,7 @@ export default class Materia extends Component {
                   <span>
                     {" "}
                     <strong>Docente :</strong>
-                    {materia.nombres}{" "}
-                    {materia.apellido_paterno}{" "}
+                    {materia.nombres} {materia.apellido_paterno}{" "}
                     {materia.apellido_materno}
                   </span>
                   <br />
@@ -199,12 +240,20 @@ export default class Materia extends Component {
                   </span>
                   <br />
                   <span>
-                    <strong>Faltas Permitidas : </strong>
-                    {" "}
+                    <strong>Faltas Permitidas : </strong>{" "}
                     {materia.faltas_permitidas}
                   </span>
+                  {/* <span>
+                    <strong>Grupo : </strong>{" "}
+                    {materia.faltas_permitidas}
+                  </span> */}
                 </p>
-                <button className="btn btn-danger" onClick={() => this.deleteUser(materia.id_materia)}>Eliminar</button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => this.deleteUser(materia.id_materia)}
+                >
+                  Eliminar
+                </button>
                 {/* <br/>
                 <br/>
                 <button className="btn btn-success"> Editar</button> */}
