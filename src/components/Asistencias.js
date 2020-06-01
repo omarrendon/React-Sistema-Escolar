@@ -7,13 +7,14 @@ export default class Asistencias extends Component {
     users: [],
     asistencias: [],
     carreraGrupos: [],
-    asistenciasGrupos: []
+    // asistenciasGrupos: []
+    materiaGrupo : []
   };
 
   componentDidMount() {
     this.getCarrera();
-    this.getAsistencias();
-    // this.getAsistenciasByGruop();
+    // this.getAsistencias();
+    // this.getMateriasByGruop();
   }
 
   getCarrera = async () => {
@@ -36,16 +37,15 @@ export default class Asistencias extends Component {
     console.log(this.state.carreraGrupos);
   };
 
-  getAsistenciasByGruop =  (id_grupo) => {
+  getMateriasByGruop =  async(id_grupo) => {
     console.log(id_grupo);
     
-    // const idGrupo = await axios.get("http://localhost:8080/grupos/asistencias?id_grupo=1");
-    // this.setState({
-    //   asistenciasGrupos : idGrupo.data
-    // }); 
-    // console.log("ASISTENCIAS_GRUPO");
-    // console.log(this.state.asistenciasGrupos);
-    
+    const materiasGrupo = await axios.get("http://localhost:8080/materias/list_mat?id_grupo=" + id_grupo);
+    this.setState({
+      materiaGrupo: materiasGrupo.data
+    });
+    console.log("MATERIAS_GRUPO");
+    console.log(this.state.materiaGrupo);
   }
 
    getAsistencias = async () => {
@@ -90,8 +90,8 @@ export default class Asistencias extends Component {
               <div className="container">
                 {
                   this.state.carreraGrupos.map( (id) => (
-                    <div className="card card-body" key={id.clave_grupo} onClick={() => this.getAsistenciasByGruop(id.id_grupo)} >
-                      <p>GRUOPO : {id.clave_grupo}</p>
+                    <div className="card card-body" key={id.clave_grupo} onClick={() => this.getMateriasByGruop(id.id_grupo)} >
+                      <p>GRUPO : {id.clave_grupo}</p>
                       {" "}
                       <p>CLAVE LICENCIATURA : {id.clave_cuatrimestre}</p>
                       {" "}
@@ -99,6 +99,13 @@ export default class Asistencias extends Component {
                     </div>
                   ))
                 }
+                {
+                  this.state.materiaGrupo.map( (materia) => (
+                    <div className="card card-body" key={materia.nombre} >
+                      <p>MATERIAS : {materia.nombre}</p>
+                    </div>
+                  ))
+                 }
               </div>
             </div>
           </div>
