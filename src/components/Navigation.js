@@ -50,10 +50,7 @@ export default class Navigation extends Component {
               {" "}
               Proyecto Oscar
             </a>
-            <Link to={"/login"} className="nav-item nav-link">
-              {" "}
-              Login{" "}
-            </Link>
+            
           </Nav>
         </Navbar.Collapse>
       </Navbar>

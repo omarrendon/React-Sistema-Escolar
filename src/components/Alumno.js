@@ -114,8 +114,8 @@ export default class Alumno extends Component {
             <form onSubmit={this.onSubmit}>
               <div className="form-group">
                 <br />
+                
                 <input
-                 
                   value={this.state.alumno.nombre}
                   type="text"
                   placeholder="Nombres"
@@ -144,8 +144,7 @@ export default class Alumno extends Component {
                   className="form-control"
                 />
                 <br />
-                <input
-                 
+                <input              
                   value={this.state.alumno.matricula}
                   type="text"
                   placeholder="Matricula"
@@ -256,17 +255,6 @@ export default class Alumno extends Component {
                         Eliminar
                       </button>
                     </td>
-                    {/* <td>
-                    <button
-                        onClick={() => this.updateUser(usuario.id_alumno)}
-                        className="btn btn-success"
-                      >
-                        Editar
-                        {
-                          this.state.editar ? 'true' : 'false'
-                        }
-                      </button>
-                    </td> */}
                   </tr>
                 ))}
               </tbody>

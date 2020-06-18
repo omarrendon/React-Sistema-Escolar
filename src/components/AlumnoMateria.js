@@ -1,217 +1,290 @@
 import React, { Component } from "react";
 import axios from "axios";
+// import Dropdown from "react-bootstrap/Dropdown";
+// import styles from "./styles/AlumnoMateria.module.css";
 
 export default class AlumnoMateria extends Component {
   state = {
-    maestros : [],
-    carreras : [],
-    materias: [],
-    content: [],
-    periodos : [],
-    grupos : [],
-    datos :{
-      id_materia : "",
-      id_maestro : "",
-      id_grupo : "",
-      id_carrera : ""
-    }
+    carreras: [],
+    gruposCrarrea: [],
+    materiasGrupo: [],
+    alumnoGrupo: [],
+   
+    calificaciones: {
+      [id]: {
+        bimestre_uno: "",
+        bimestre_dos: "",
+        ordinario: "",
+        promedio_bimestral: "",
+        promedio_final: "",
+        extraordinario: "",
+        titulo: "",
+        insuficiencia: "",
+      }
+    },
   };
 
   componentDidMount() {
-    this.getMateria();
-    this.getAlumnoMateria();
-    this.getMaestro();
     this.getCarrera();
-    this.getPeriodo();
-    this.getGrupo();
-  }
-  
-  getGrupo = async() => {
-    const response = await axios.get("http://localhost:8080/grupos/listar")
-    this.setState({
-      grupos : response.data
-    })
-    console.log("Grupos");
-    console.log(this.state.grupos);
-    
   }
 
-  getPeriodo = async() => {
-    const response = await axios.get("http://localhost:8080/periodos/listar");
-    this.setState({
-      periodos : response.data
-    });
-    console.log("PERIODOS");
-    console.log(this.state.periodos);
-  }
-
-  getCarrera = async() => {
+  getCarrera = async () => {
     const response = await axios.get("http://localhost:8080/carreras/listar");
     this.setState({
-      carreras : response.data
+      carreras: response.data,
     });
-    console.log("Carreras");
+    console.log("CARRERAS");
     console.log(this.state.carreras);
-  }
-
-  getMaestro = async() => {
-    const response = await axios.get("http://localhost:8080/maestros/listar");
-    this.setState({
-      maestros : response.data
-    })
-    console.log("Mastros");
-    console.log(this.state.maestros);
-  } 
-
-  getMateria = async () => {
-    const response = await axios.get("http://localhost:8080/materias/listar");
-    this.setState({
-      materias: response.data
-    });
-    console.log("MATERIAS");
-    console.log(this.state.materias);
   };
 
-  getAlumnoMateria = async () => {
-    const response = await axios.get("http://localhost:8080/documentosGenerados/listar");
+  getGruposByCarrea = async (id_carrera) => {
+    const response = await axios.get(
+      "http://localhost:8080/carreras/grupos?id_carrera=" + id_carrera
+    );
     this.setState({
-      content: response.data
+      gruposCrarrea: response.data,
     });
-    console.log("CONTENIDO documento generado");
-    console.log(this.state.content);
+    console.log("GRUPOS_CARRERAS");
+    console.log(this.state.gruposCrarrea);
   };
 
-  onChange = e => {
+  getMateriasByGruop = async (id_grupo) => {
+    console.log(id_grupo);
+    const response = await axios.get(
+      "http://localhost:8080/materias/list_mat?id_grupo=" + id_grupo
+    );
     this.setState({
-      datos : {
-        ...this.state.datos,
-        [e.target.name] : e.target.value
-      }
-      // Alumno_Materia: {
-      //   ...this.state.Alumno_Materia,
-      //   [e.target.name]: e.target.value
-      // }
+      materiasGrupo: response.data,
+    });
+    console.log("MATERIAS_GRUPO");
+    console.log(this.state.materiasGrupo);
+  };
+
+  getAlumnosByMateria = async (id_materia) => {
+    console.log(id_materia);
+    const response = await axios.get(
+      "http://localhost:8080/materias/list_alu?id_materia=" + id_materia
+    );
+    this.setState({
+      alumnoGrupo: response.data,
+    });
+    console.log("ALUMNOS_GRUPO");
+    console.log(this.state.alumnoGrupo);
+  };
+
+  onChange = (id, event) => {
+    const { calificaciones } = this.state;
+    const { name, value } = event.target;
+    this.setState({
+      calificaciones: {
+        ...calificaciones,
+        [id]: {
+          ...calificaciones[id],
+          [name]: value,
+        },
+      },
     });
   };
 
-  onSubmit = async e => {
-    e.preventDefault();
-    const data = new FormData(e.target);
-    data.set('id_maestro' , data.get('id_maestro'));
-    data.set('id_materia' , data.get('id_materia'));
-    data.set('id_carrera' , data.get('id_carrera'));
-    data.set('id_maestro' , data.get('id_maestro'));
-
-    const imprimir = await axios.get(`http://localhost:8080/documentosGenerados/imprimir/${this.state.datos.id_materia}-${this.state.datos.id_maestro}-${this.state.datos.id_grupo}-${this.state.datos.id_carrera}`)
-    
-    console.log(imprimir.data);
-    
-    
-  
-  }
-  
+  calificar = async (event) => {
+    event.preventDefault();
+  };
 
   render() {
+    const {
+      carreras,
+      gruposCrarrea,
+      materiasGrupo,
+      alumnoGrupo,
+      calificaciones,
+    } = this.state;
+
     return (
-      <div className="">
-        <div className="row">
-          <div className="col-12 col-sm-12 col-md-12">
-            <h2>Generar Boleta</h2>
-            <div className="dropdown-divider"></div>
+      <>
+        <div className="row ">
+          {/* CARRERAS */}
+          <div className="col-12 col-md-4 col-sm-12">
             <div className="card card-body">
-              <form onSubmit={this.onSubmit}>
-                <div className="form-group">
-                  <span>
-                    <strong>Catedrático</strong>
-                  </span>
-                  <select
-                    name="id_maestro"
-                    value={this.state.datos.id_maestro}
-                    className="custom-select"
-                    onChange={this.onChange}
-                  >
-                    {this.state.maestros.map(maestro => (
-                      <option value={maestro.id_maestro} key={maestro.id_maestro}>
-                        {maestro.nombres} {maestro.apellido_paterno}{" "}
-                        {maestro.apellido_materno}
-                      </option>
-                    ))}
-                  </select>
-                  <span>
-                    <strong>Asignatura</strong>
-                  </span>
-                  <select
-                    name="id_materia"
-                    value={this.state.datos.id_materia}
-                    className="custom-select"
-                    onChange={this.onChange}
-                  >
-                    {this.state.materias.map(materia => (
-                      <option
-                        value={materia.id_materia}
-                        key={materia.id_materia}
-                      >
-                        {materia.nombre}
-                      </option>
-                    ))}
-                  </select>
+              <div className="h3 text-center">Seleccionar Licenciatura</div>
 
-                  <span>
-                    <strong>Licenciatura</strong>
-                  </span>
-                  <select
-                    name="id_carrera"
-                    value={this.state.datos.id_carrera}
-                    className="custom-select"
-                    onChange={this.onChange}
+              <ul className="list-group">
+                {carreras.map((carrera) => (
+                  <li
+                    key={carrera.id_carrera}
+                    className="list-group-item"
+                    onClick={() => this.getGruposByCarrea(carrera.id_carrera)}
                   >
-                    {this.state.carreras.map(carrera => (
-                      <option value={carrera.id_carrera} key={carrera.id_carrera}>
-                        {carrera.nombre}
-                      </option>
-                    ))}
-                  </select>
-                  
-                  <span>
-                    <strong>Grupo</strong>
-                  </span>
-                  <select
-                    name="id_grupo"
-                    value={this.state.datos.id_grupo}
-                    className="custom-select"
-                    onChange={this.onChange}
-                  >
-                    {this.state.grupos.map(grupo => (
-                      <option value={grupo.id_grupo} key={grupo.id_grupo}>
-                        {grupo.clave_grupo}
-                      </option>
-                    ))}
-                  </select>
-
-                  <div className="dropdown-divider"></div>
-                  <button 
-                    type="submit" 
-                    className="btn btn-primary" 
-                    
-                  >
-                    Imprimir
-                  </button>
-                </div>
-              </form>
+                    {carrera.nombre}
+                  </li>
+                ))}
+              </ul>
             </div>
-            
+          </div>
+
+          {/* GRUPOS */}
+          <div className="col-12 col-md-4 col-sm-12">
+            <div className="card card-body">
+              <div className="h3 text-center">Seleccionar Grupo</div>
+              <ul className="list-group">
+                {gruposCrarrea.map((grupo) => (
+                  <li
+                    className="list-group-item"
+                    key={grupo.id_grupo}
+                    onClick={() => this.getMateriasByGruop(grupo.id_grupo)}
+                  >
+                    <span>GRUPO : {grupo.clave_grupo}</span>
+                    <div className="dropdown-divider"></div>
+                    <span>CLAVE LICENCIATURA : {grupo.clave_cuatrimestre}</span>
+                    <div className="dropdown-divider"></div>
+                    <span>AULA : {grupo.aula}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className="dropdown-divider"></div>
+
+          {/* MATERIAS */}
+          <div className="col-12 col-md-4 col-sm-12">
+            <div className="card card-body">
+              <div className="h3 text-center">Calificar Materia</div>
+              <ul className="list-group">
+                {materiasGrupo.map((materia) => (
+                  <div
+                    className="card card-body"
+                    key={materia.nombre}
+                    onClick={() => this.getAlumnosByMateria(materia.id_materia)}
+                  >
+                    <p>{materia.nombre}</p>
+                  </div>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
-
+        <div className="dropdown-divider"></div>
 
         <div className="row">
-          <div className="col-md-12">
-            <h2>Imprimir Boleta</h2>
-            <div className="dropdown-divider"></div>
-
+          {/* BOLETA */}
+          <div className="col-12 col-md-12 col-sm-12">
+            <div className="card card-body">
+              <div className="h3 text-center">Boleta</div>
+              <div className="boleta">
+                <form onSubmit={this.calificar}>
+                  <table className="table">
+                    <thead className="thead-dark">
+                      <tr>
+                        <th scope="col">Alumno</th>
+                        <th scope="col">Primer Bimestre</th>
+                        <th scope="col">Segundo Bimestre</th>
+                        <th scope="col">Ordinario</th>
+                        <th scope="col">Promedio Bimestral</th>
+                        <th scope="col">Promedio Final</th>
+                        <th scope="col">Extraordinario</th>
+                        <th scope="col">Título</th>
+                        <th scope="col">Insuficiencia</th>
+                        <th scope="col"> Calificar</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {alumnoGrupo.map((alumno, index) => (
+                        <tr key={alumno.id_alumno}>
+                          <th scope="row">
+                            {alumno.nombre} {alumno.apellido_pat}{" "}
+                            {alumno.apellido_mat}
+                          </th>
+                          <td>
+                            <input
+                              type="number"
+                              name="bimestre_uno"
+                              onChange={(event) =>
+                                this.onChange(alumno.id_alumno, event)
+                              }
+                              value={
+                                calificaciones[alumno.id_alumno].bimestre_uno
+                              }
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              name="bimestre_dos"
+                              id=""
+                              onChange={this.onChange}
+                              value={calificaciones.bimestre_dos}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              name="ordinario"
+                              id=""
+                              onChange={this.onChange}
+                              value={calificaciones.ordinario}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              name="promedio_bimestral"
+                              id=""
+                              onChange={this.onChange}
+                              value={calificaciones.promedio_bimestral}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              name="promedio_final"
+                              id=""
+                              onChange={this.onChange}
+                              value={calificaciones.promedio_final}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              name="extraordinario"
+                              id=""
+                              onChange={this.onChange}
+                              value={calificaciones.extraordinario}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              name="titulo"
+                              id=""
+                              onChange={this.onChange}
+                              value={calificaciones.titulo}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              name="insuficiencia"
+                              id=""
+                              onChange={this.onChange}
+                              value={calificaciones.insuficiencia}
+                            />
+                          </td>
+                          <td>
+                            <button type="submit" className="btn btn-success">
+                              {" "}
+                              Calificar
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                      {/* </form> */}
+                    </tbody>
+                  </table>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }
