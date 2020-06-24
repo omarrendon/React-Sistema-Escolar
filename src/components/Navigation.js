@@ -38,7 +38,10 @@ export default class Navigation extends Component {
             <Link to={"/boleta"} className="nav-item nav-link">
               Boleta{" "}
             </Link>
-
+            
+            <Link to={"/"} className="nav-item nav-link">
+              Iniciar Sesion{" "}
+            </Link>
             <a
               className="nav-item nav-link"
               href="http://localhost:8080/documentosGenerados/imprimir/3-2-4-2"

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 // import Dropdown from "react-bootstrap/Dropdown";
-// import styles from "./styles/AlumnoMateria.module.css";
+import styles from "./styles/AlumnoMateria.module.css";
 
 export default class AlumnoMateria extends Component {
   state = {
@@ -9,19 +9,7 @@ export default class AlumnoMateria extends Component {
     gruposCrarrea: [],
     materiasGrupo: [],
     alumnoGrupo: [],
-   
-    calificaciones: {
-      [id]: {
-        bimestre_uno: "",
-        bimestre_dos: "",
-        ordinario: "",
-        promedio_bimestral: "",
-        promedio_final: "",
-        extraordinario: "",
-        titulo: "",
-        insuficiencia: "",
-      }
-    },
+    calificaciones: {},
   };
 
   componentDidMount() {
@@ -65,8 +53,26 @@ export default class AlumnoMateria extends Component {
     const response = await axios.get(
       "http://localhost:8080/materias/list_alu?id_materia=" + id_materia
     );
+    const alumnoGrupo = response.data;
+    let calificaciones = {};
+    alumnoGrupo.forEach(({ id_alumno }) => {
+      calificaciones = {
+        ...calificaciones,
+        [id_alumno]: {
+          bimestre_uno: "",
+          bimestre_dos: "",
+          ordinario: "",
+          promedio_bimestral: "",
+          promedio_final: "",
+          extraordinario: "",
+          titulo: "",
+          insuficiencia: "",
+        },
+      };
+    });
     this.setState({
-      alumnoGrupo: response.data,
+      alumnoGrupo,
+      calificaciones,
     });
     console.log("ALUMNOS_GRUPO");
     console.log(this.state.alumnoGrupo);
@@ -87,7 +93,23 @@ export default class AlumnoMateria extends Component {
   };
 
   calificar = async (event) => {
+    const { calificaciones } = this.state;
     event.preventDefault();
+    // const numero = parseInt(calificaciones)
+    console.log(calificaciones);
+    
+    const data = new FormData(event.target);
+    data.set("bimestre_uno", data.get("bimestre_uno"));
+    data.set("bimestre_dos", data.get("bimestre_uno"));
+    data.set("ordinario", data.get("ordinario"));
+    data.set("promedio_bimestral", data.get("promedio_bimestral"));
+    data.set("promedio_final", data.get("promedio_final"));
+    data.set("extraordinario", data.get("extraordinario"));
+    data.set("titulo", data.get("titulo"));
+    data.set("insuficiencia", data.get("insuficiencia"));
+
+    axios.post("http://localhost:8080/calificacion/crear", data );
+    
   };
 
   render() {
@@ -98,6 +120,8 @@ export default class AlumnoMateria extends Component {
       alumnoGrupo,
       calificaciones,
     } = this.state;
+
+    // console.log('calificaciones ##', calificaciones);
 
     return (
       <>
@@ -142,6 +166,7 @@ export default class AlumnoMateria extends Component {
               </ul>
             </div>
           </div>
+
           <div className="dropdown-divider"></div>
 
           {/* MATERIAS */}
@@ -180,7 +205,7 @@ export default class AlumnoMateria extends Component {
                         <th scope="col">Ordinario</th>
                         <th scope="col">Promedio Bimestral</th>
                         <th scope="col">Promedio Final</th>
-                        <th scope="col">Extraordinario</th>
+                        <th scope="col">Examen Extraordinario</th>
                         <th scope="col">Título</th>
                         <th scope="col">Insuficiencia</th>
                         <th scope="col"> Calificar</th>
@@ -203,69 +228,96 @@ export default class AlumnoMateria extends Component {
                               value={
                                 calificaciones[alumno.id_alumno].bimestre_uno
                               }
+                              className={styles}
                             />
                           </td>
                           <td>
                             <input
                               type="number"
                               name="bimestre_dos"
-                              id=""
-                              onChange={this.onChange}
-                              value={calificaciones.bimestre_dos}
+                              onChange={(event) =>
+                                this.onChange(alumno.id_alumno, event)
+                              }
+                              value={
+                                calificaciones[alumno.id_alumno].bimestre_dos
+                              }
+                              className={styles}
                             />
                           </td>
                           <td>
                             <input
                               type="number"
                               name="ordinario"
-                              id=""
-                              onChange={this.onChange}
-                              value={calificaciones.ordinario}
+                              onChange={(event) =>
+                                this.onChange(alumno.id_alumno, event)
+                              }
+                              value={calificaciones[alumno.id_alumno].ordinario}
+                              className={styles}
                             />
                           </td>
                           <td>
                             <input
                               type="number"
                               name="promedio_bimestral"
-                              id=""
-                              onChange={this.onChange}
-                              value={calificaciones.promedio_bimestral}
+                              onChange={(event) =>
+                                this.onChange(alumno.id_alumno, event)
+                              }
+                              value={
+                                calificaciones[alumno.id_alumno]
+                                  .promedio_bimestral
+                              }
+                              className={styles}
                             />
                           </td>
                           <td>
                             <input
+                              className={styles}
                               type="number"
                               name="promedio_final"
                               id=""
-                              onChange={this.onChange}
-                              value={calificaciones.promedio_final}
+                              onChange={(event) =>
+                                this.onChange(alumno.id_alumno, event)
+                              }
+                              value={
+                                calificaciones[alumno.id_alumno].promedio_final
+                              }
                             />
                           </td>
                           <td>
                             <input
                               type="number"
+                              className={styles}
                               name="extraordinario"
-                              id=""
-                              onChange={this.onChange}
-                              value={calificaciones.extraordinario}
+                              onChange={(event) =>
+                                this.onChange(alumno.id_alumno, event)
+                              }
+                              value={
+                                calificaciones[alumno.id_alumno].extraordinario
+                              }
                             />
                           </td>
                           <td>
                             <input
                               type="number"
                               name="titulo"
-                              id=""
-                              onChange={this.onChange}
-                              value={calificaciones.titulo}
+                              className={styles}
+                              onChange={(event) =>
+                                this.onChange(alumno.id_alumno, event)
+                              }
+                              value={calificaciones[alumno.id_alumno].titulo}
                             />
                           </td>
                           <td>
                             <input
                               type="number"
                               name="insuficiencia"
-                              id=""
-                              onChange={this.onChange}
-                              value={calificaciones.insuficiencia}
+                              className={styles}
+                              onChange={(event) =>
+                                this.onChange(alumno.id_alumno, event)
+                              }
+                              value={
+                                calificaciones[alumno.id_alumno].insuficiencia
+                              }
                             />
                           </td>
                           <td>
@@ -276,9 +328,12 @@ export default class AlumnoMateria extends Component {
                           </td>
                         </tr>
                       ))}
-                      {/* </form> */}
                     </tbody>
                   </table>
+                  {/* <button type="submit" className="btn btn-success">
+                    {" "}
+                    Calificar
+                  </button> */}
                 </form>
               </div>
             </div>

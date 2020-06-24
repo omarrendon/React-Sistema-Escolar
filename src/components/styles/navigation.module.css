@@ -1,11 +1,9 @@
-
-
-.Links{
-    text-decoration: none;
-    font-size: 2.1em;
-    color: #000000;
+.Links {
+  text-decoration: none;
+  font-size: 2.1em;
+  color: #000000;
 }
 
-.form-contorl{
-    
+input {
+  width: 10px;
 }

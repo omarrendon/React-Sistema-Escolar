@@ -93,54 +93,27 @@ export default class Asistencias extends Component {
 
   onSubmit = async (event) => {
     event.preventDefault();
-    // const {
-    //   numero_asistencias,
-    //   fk_materia,
-    //   fk_alumno,
-    // } = this.state.asistenciasData;
-
-    const numero_asistencias = parseInt(this.state.asistenciasData.numero_asistencias, 10);
-    const fk_materia = parseInt(this.state.asistenciasData.fk_materia , 10);
-    const fk_alumno = parseInt(this.state.asistenciasData.fk_alumno , 10);
-
-    const data = {
+    const {
       numero_asistencias,
       fk_materia,
-      fk_alumno
-    }
+      fk_alumno,
+    } = this.state.asistenciasData;
 
     console.log("NUMEROSSS! " + numero_asistencias, fk_materia, fk_alumno);
-    // console.log(dataObject);
 
-
-    // const data = new FormData();
-    // data.append("data",dataObject);
-
-
-    fetch("http://localhost:8080/asistencias/crear", {
-      method: 'post',
-      body : data
-    })
-
-    
-    // const data = new FormData(event.targat);
-
-    // data.set("numero_asistencias", data.get("numero_asistencias"));
-    // data.set("fk_materia", data.get("fk_materia"));
-    // data.set("fk_alumno", data.get("fk_alumno"));
-
-    // if (numero_asistencias === "" || fk_materia === "" || fk_alumno === "") {
-    //   alert("RELLENAR LOS CAMPOS VACIOS ");
-    // } else {
-    //   await axios.post("http://localhost:8080/asistencias/crear", data);
-    //   this.setState({
-    //     asistenciasData: {
-    //       numero_asistencias:0 ,
-    //       fk_materia: 0,
-    //       fk_alumno: 0,
-    //     },
-    //   });
-    // }
+    if (numero_asistencias === "" || fk_materia === "" || fk_alumno === "") {
+      alert("RELLENAR LOS CAMPOS VACIOS ");
+    } else {
+      await axios.post("http://localhost:8080/asistencias/crear", numero_asistencias, fk_materia, fk_alumno);
+      // await axios.post("http://localhost:8080/alumnosmateria/crear", )
+      this.setState({
+        asistenciasData: {
+          numero_asistencias:0 ,
+          fk_materia: "",
+          fk_alumno: "",
+        },
+      });
+    }
   };
 
   render() {
