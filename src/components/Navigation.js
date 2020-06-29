@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Navbar, Nav} from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
 
 export default class Navigation extends Component {
+  reload = () => {
+    window.location.reload(true);
+  };
+
+
   render() {
     return (
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -38,10 +43,13 @@ export default class Navigation extends Component {
             <Link to={"/boleta"} className="nav-item nav-link">
               Boleta{" "}
             </Link>
-            
-            <Link to={"/"} className="nav-item nav-link">
+
+            {/* <a onClick={this.reload} className="nav-item nav-link">
               Iniciar Sesion{" "}
-            </Link>
+            </a> */}
+            {/* <Link to={"/loginAdministrador"} className="nav-item nav-link">
+              Iniciar Sesion{" "}
+            </Link> */}
             <a
               className="nav-item nav-link"
               href="http://localhost:8080/documentosGenerados/imprimir/3-2-4-2"
@@ -49,11 +57,10 @@ export default class Navigation extends Component {
               Boleta generada
             </a>
 
-            <a className="nav-item nav-link" href="http://localhost:8080">
+            <a className="nav-item nav-link" href="http://localhost:8080/file">
               {" "}
               Proyecto Oscar
             </a>
-            
           </Nav>
         </Navbar.Collapse>
       </Navbar>

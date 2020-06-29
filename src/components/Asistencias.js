@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
+import {Snackbar} from "./snackbar/Snackbar";
 
 export default class Asistencias extends Component {
+  snackbarRef = React.createRef();
   state = {
     carreras: [],
     users: [],
@@ -98,14 +100,12 @@ export default class Asistencias extends Component {
       fk_materia,
       fk_alumno,
     } = this.state.asistenciasData;
-
     console.log("NUMEROSSS! " + numero_asistencias, fk_materia, fk_alumno);
-
     if (numero_asistencias === "" || fk_materia === "" || fk_alumno === "") {
       alert("RELLENAR LOS CAMPOS VACIOS ");
     } else {
       await axios.post("http://localhost:8080/asistencias/crear", numero_asistencias, fk_materia, fk_alumno);
-      // await axios.post("http://localhost:8080/alumnosmateria/crear", )
+    this.snackbarRef.current.openSnackBar('Asistencia Creada Correctamente...');
       this.setState({
         asistenciasData: {
           numero_asistencias:0 ,
@@ -137,7 +137,7 @@ export default class Asistencias extends Component {
             </div>
           </div>
         </div>
-
+        <Snackbar ref={this.snackbarRef}/>
         <div className="dropdown-divider"></div>
 
         <div className="row justify-content-md-center">

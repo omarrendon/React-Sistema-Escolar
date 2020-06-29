@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios";
+import {Snackbar} from "./snackbar/Snackbar";
 
 export default class Materia extends Component {
+  snackbarRef = React.createRef();
+
   state = {
     materias: [],
     materia: {
@@ -86,6 +89,7 @@ export default class Materia extends Component {
       alert("RELLENAR TODOS LOS CAPOS FALTANTES");
     } else {
       await axios.post("http://localhost:8080/materias/crear", data);
+      this.snackbarRef.current.openSnackBar('Materia Agregada Exitosamente...');
       this.getCarrera();
       this.getMaestro();
       this.getMateria();
@@ -104,6 +108,7 @@ export default class Materia extends Component {
 
   deleteUser = async (id_materia) => {
     await axios.get(`http://localhost:8080/materias/borrar/${id_materia}`);
+    this.snackbarRef.current.openSnackBar('Materia Eliminada...');
     this.getMateria();
     console.log("MATERIA ELIMINADA :" + id_materia);
   };
@@ -214,6 +219,8 @@ export default class Materia extends Component {
                 <button type="submit" className="btn btn-success">
                   Guardar
                 </button>
+                <Snackbar ref={this.snackbarRef}/>
+
               </div>
             </form>
           </div>

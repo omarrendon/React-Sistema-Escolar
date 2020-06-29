@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios";
+import {Snackbar} from "./snackbar/Snackbar";
 
 export default class Maestro extends Component {
+  snackbarRef = React.createRef();
+  
   state = {
     maestros: [],
     maestro: {
@@ -50,6 +53,7 @@ export default class Maestro extends Component {
       alert("RELLENAR LOS CAMPOS VACIOS ");
     } else {
       await axios.post("http://localhost:8080/maestros/crear", data);
+      this.snackbarRef.current.openSnackBar('Profesor Agregado Exitosamente..');
       this.getMaestros();
       this.setState({
         maestro: {
@@ -65,6 +69,7 @@ export default class Maestro extends Component {
 
   deleteUser = async(id_maestro) => {
     await axios.get(`http://localhost:8080/maestros/borrar/${id_maestro}`);
+    this.snackbarRef.current.openSnackBar('Profesor Eliminado...');
     this.getMaestros();
     console.log("USUARIO ELIMINADO :" + id_maestro);
   };
@@ -156,6 +161,7 @@ export default class Maestro extends Component {
                   ))
                 }
               </tbody>
+              <Snackbar ref={this.snackbarRef}/>
           </table>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Navbar } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
 
 export default class MenuLogin extends Component {
   render() {
@@ -15,7 +15,14 @@ export default class MenuLogin extends Component {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
         <Navbar.Collapse id="responsive-navbar-nav">
-          
+          {/* <Nav className="mr-auto">
+            <Link to={"/login"} className="nav-item nav-link">
+              Alumno{" "}
+            </Link>
+            <Link to={"/loginAdministrador"} className="nav-item nav-link">
+              Administrador{" "}
+            </Link>
+          </Nav> */}
         </Navbar.Collapse>
       </Navbar>
     );

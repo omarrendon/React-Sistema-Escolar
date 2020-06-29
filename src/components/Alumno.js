@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
-
+import {Snackbar} from "./snackbar/Snackbar";
 
 export default class Alumno extends Component {
+  snackbarRef = React.createRef();
   state = {
     users: [],
     alumno: {
@@ -62,7 +63,6 @@ export default class Alumno extends Component {
     console.log(this.state.users);
   };
 
-
   onSubmit = async e => {
     const { nombre, apellido_paterno, apellido_materno, matricula, users, pass} = this.state.alumno;
     e.preventDefault();
@@ -83,6 +83,7 @@ export default class Alumno extends Component {
       alert("RELLENAR LOS CAMPOS VACIOS ");
     } else {
       await axios.post("http://localhost:8080/alumnos/crear", data);
+      this.snackbarRef.current.openSnackBar('Alumno Agregado. Exitosamente..');
       this.getData();
       this.setState({
         alumno: {
@@ -99,8 +100,9 @@ export default class Alumno extends Component {
     }
   };
 
-  deleteUser = async(id_alumno) => {
+  deleteUser = async(id_alumno, e) => {
     await axios.get(`http://localhost:8080/alumnos/borrar/${id_alumno}`)
+    this.snackbarRef.current.openSnackBar('Alumno Eliminado...');
     this.getData();
     console.log("USUARIO ELIMINADO :" + id_alumno);
   };
@@ -212,9 +214,10 @@ export default class Alumno extends Component {
                 <br />
 
                 <div className="dropdown-divider"></div>
-                <button type="submit" className="btn btn-success">
+                <button type="submit" className="btn btn-success" >
                   Guardar
                 </button>
+                <Snackbar ref={this.snackbarRef}/>
               </div>
             </form>
           </div>

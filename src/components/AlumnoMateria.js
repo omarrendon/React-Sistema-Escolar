@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
-// import Dropdown from "react-bootstrap/Dropdown";
 import styles from "./styles/AlumnoMateria.module.css";
+import {Snackbar} from "./snackbar/Snackbar";
 
 export default class AlumnoMateria extends Component {
+  snackbarRef = React.createRef();
+  
   state = {
     carreras: [],
     gruposCrarrea: [],
@@ -109,6 +111,7 @@ export default class AlumnoMateria extends Component {
     data.set("insuficiencia", data.get("insuficiencia"));
 
     axios.post("http://localhost:8080/calificacion/crear", data );
+    this.snackbarRef.current.openSnackBar('Se califico correctamente..');
     
   };
 
@@ -144,6 +147,7 @@ export default class AlumnoMateria extends Component {
               </ul>
             </div>
           </div>
+          <Snackbar ref={this.snackbarRef}/>
 
           {/* GRUPOS */}
           <div className="col-12 col-md-4 col-sm-12">

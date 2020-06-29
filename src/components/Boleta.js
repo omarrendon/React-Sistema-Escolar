@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios";
-// import Dropdown from "react-bootstrap/Dropdown";
-// import styles from "./styles/AlumnoMateria.module.css";
-
-// // DATOS DE LA BOLETA: ID_CARRERA, ID_MATERIA, ID_GRUPO, FK_GRUPO, FK_MATERIA, ID_PERIODO
+import {Snackbar} from "./snackbar/Snackbar";
 
 export default class AlumnoMateria extends Component {
+  snackbarRef = React.createRef();
+
   state = {
     carreras: [],
     grupos: [],
@@ -95,7 +94,8 @@ export default class AlumnoMateria extends Component {
       "FK_MATERIA"+fk_materia+""+
       "ID_PERIODO"+id_periodo
     );
-
+    this.snackbarRef.current.openSnackBar('Boleta Generada..');
+    
     // const data = new FormData(event.target);
     // data.set("id_carrea", data.get("id_carrea"));
     // data.set("id_materia", data.get("id_materia"));
@@ -105,7 +105,7 @@ export default class AlumnoMateria extends Component {
     // data.set(fk_materia, data.get(fk_materia));
 
 
-    axios.get(
+    await axios.get(
       "http://localhost:8080/materias/boleta?id_carrera=" + id_carrera + "&id_materia=" + id_materia + "&id_grupo=" + id_grupo + "&fk_grupo=" + fk_grupo + "&fk_materia=" +fk_materia + "&id_periodo=" + id_periodo);
   };
 
@@ -118,6 +118,9 @@ export default class AlumnoMateria extends Component {
           <div className="card card-body">
             <div className="form-group">
             <div className="h3 text-center">Generar Boleta</div>
+            <hr/>
+            <Snackbar ref={this.snackbarRef}/>
+
               <form onSubmit={this.onSubmit}>
                 <select
                   value={boletaData.id_carrera}
@@ -132,6 +135,7 @@ export default class AlumnoMateria extends Component {
                     </option>
                   ))}
                 </select>
+                <hr/>
                 
                 <select
                   value={boletaData.id_grupo}
@@ -150,6 +154,7 @@ export default class AlumnoMateria extends Component {
                  </option>
                   ))}
                 </select>
+                <hr/>
 
                 <select
                   value={boletaData.id_materia}
@@ -164,6 +169,7 @@ export default class AlumnoMateria extends Component {
                  </option>
                   ))}
                 </select>
+                <hr/>
 
                 <select
                   value={boletaData.id_periodo}
@@ -180,6 +186,7 @@ export default class AlumnoMateria extends Component {
                  </option>
                   ))}
                 </select>
+                <hr/>
                 <button type="submit" className="btn btn-success">Generar</button>
               </form>
             </div>
