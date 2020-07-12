@@ -1,12 +1,22 @@
 import React, { Component } from "react";
 import axios from "axios";
-import styles from "./styles/AlumnoMateria.module.css";
-import {Snackbar} from "./snackbar/Snackbar";
+import styles from "./styles/alumno.module.css";
+import { Snackbar } from "./snackbar/Snackbar";
 
 export default class AlumnoMateria extends Component {
   snackbarRef = React.createRef();
-  
+
   state = {
+    colorState: {
+      activeObj: null,
+    },
+    colorGrupo: {
+      activeObj: null,
+    },
+    colorMateria: {
+      activeObj: null,
+    },
+
     carreras: [],
     gruposCrarrea: [],
     materiasGrupo: [],
@@ -33,9 +43,21 @@ export default class AlumnoMateria extends Component {
     );
     this.setState({
       gruposCrarrea: response.data,
+      colorState: {
+        ...this.state.colorState,
+        activeObj: id_carrera,
+      },
     });
     console.log("GRUPOS_CARRERAS");
     console.log(this.state.gruposCrarrea);
+  };
+
+  changeStyle = (id_carrera) => {
+    if (id_carrera === this.state.colorState.activeObj) {
+      return "active list-group-item";
+    } else {
+      return "inactive list-group-item";
+    }
   };
 
   getMateriasByGruop = async (id_grupo) => {
@@ -45,9 +67,20 @@ export default class AlumnoMateria extends Component {
     );
     this.setState({
       materiasGrupo: response.data,
+      colorGrupo:{
+        ...this.state.colorGrupo, activeObj: id_grupo
+      }
     });
     console.log("MATERIAS_GRUPO");
     console.log(this.state.materiasGrupo);
+  };
+
+  changeColorGrupo = (id_grupo) => {
+    if(id_grupo === this.state.colorGrupo.activeObj){
+      return "active list-group-item"
+    }else {
+      return "inactive list-group-item"
+    }
   };
 
   getAlumnosByMateria = async (id_materia) => {
@@ -75,9 +108,20 @@ export default class AlumnoMateria extends Component {
     this.setState({
       alumnoGrupo,
       calificaciones,
+      colorMateria:{
+        ...this.state.colorMateria, activeObj: id_materia
+      }
     });
     console.log("ALUMNOS_GRUPO");
     console.log(this.state.alumnoGrupo);
+  };
+
+  changeColorMateria = (id_materia) => {
+    if(id_materia === this.state.colorMateria.activeObj){
+      return "active list-group-item"
+    }else {
+      return "inactive list-group-item"
+    }
   };
 
   onChange = (id, event) => {
@@ -99,7 +143,7 @@ export default class AlumnoMateria extends Component {
     event.preventDefault();
     // const numero = parseInt(calificaciones)
     console.log(calificaciones);
-    
+
     const data = new FormData(event.target);
     data.set("bimestre_uno", data.get("bimestre_uno"));
     data.set("bimestre_dos", data.get("bimestre_uno"));
@@ -110,9 +154,8 @@ export default class AlumnoMateria extends Component {
     data.set("titulo", data.get("titulo"));
     data.set("insuficiencia", data.get("insuficiencia"));
 
-    axios.post("http://localhost:8080/calificacion/crear", data );
-    this.snackbarRef.current.openSnackBar('Se califico correctamente..');
-    
+    axios.post("http://localhost:8080/calificacion/crear", data);
+    this.snackbarRef.current.openSnackBar("Se califico correctamente..");
   };
 
   render() {
@@ -123,8 +166,6 @@ export default class AlumnoMateria extends Component {
       alumnoGrupo,
       calificaciones,
     } = this.state;
-
-    // console.log('calificaciones ##', calificaciones);
 
     return (
       <>
@@ -138,7 +179,7 @@ export default class AlumnoMateria extends Component {
                 {carreras.map((carrera) => (
                   <li
                     key={carrera.id_carrera}
-                    className="list-group-item"
+                    className={this.changeStyle(carrera.id_carrera)}
                     onClick={() => this.getGruposByCarrea(carrera.id_carrera)}
                   >
                     {carrera.nombre}
@@ -147,27 +188,25 @@ export default class AlumnoMateria extends Component {
               </ul>
             </div>
           </div>
-          <Snackbar ref={this.snackbarRef}/>
+          <Snackbar ref={this.snackbarRef} />
 
-          {/* GRUPOS */}
+          {/* GRUPOS  */}
           <div className="col-12 col-md-4 col-sm-12">
             <div className="card card-body">
               <div className="h3 text-center">Seleccionar Grupo</div>
-              <ul className="list-group">
+             
                 {gruposCrarrea.map((grupo) => (
-                  <li
-                    className="list-group-item"
+                  <div
+                    className={this.changeColorGrupo(grupo.id_grupo)}
                     key={grupo.id_grupo}
                     onClick={() => this.getMateriasByGruop(grupo.id_grupo)}
                   >
-                    <span>GRUPO : {grupo.clave_grupo}</span>
-                    <div className="dropdown-divider"></div>
-                    <span>CLAVE LICENCIATURA : {grupo.clave_cuatrimestre}</span>
-                    <div className="dropdown-divider"></div>
-                    <span>AULA : {grupo.aula}</span>
-                  </li>
+                    <p>GRUPO : {grupo.clave_grupo}</p>
+                    <p>CLAVE LICENCIATURA : {grupo.clave_cuatrimestre}</p>
+                    <p>AULA : {grupo.aula}</p>
+                  </div>
                 ))}
-              </ul>
+             
             </div>
           </div>
 
@@ -180,7 +219,7 @@ export default class AlumnoMateria extends Component {
               <ul className="list-group">
                 {materiasGrupo.map((materia) => (
                   <div
-                    className="card card-body"
+                    className={this.changeColorMateria(materia.id_materia)}
                     key={materia.nombre}
                     onClick={() => this.getAlumnosByMateria(materia.id_materia)}
                   >
