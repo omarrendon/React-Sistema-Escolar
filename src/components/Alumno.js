@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import {Snackbar} from "./snackbar/Snackbar";
+import PaginacionAlumno from './PaginacionAlumno';
+import AlumnosMap from "./AlumnosMap";
 
 export default class Alumno extends Component {
   snackbarRef = React.createRef();
@@ -18,7 +20,11 @@ export default class Alumno extends Component {
     },
     carreras: [],
     grupos : [],
-    editar : false
+
+    // paginacion
+    loading:false,
+    paginaActual: 1,
+    alumnoPorPagina: 5,
   }; 
 
   componentDidMount() {
@@ -55,10 +61,12 @@ export default class Alumno extends Component {
   };
 
   getData = async () => {
+    this.setState({loading: true});
     const response = await axios.get("http://localhost:8080/alumnos/listar");
     this.setState({
       users: response.data
     });
+    this.setState({loading: false});
     console.log("ALUMNOS");
     console.log(this.state.users);
   };
@@ -106,8 +114,18 @@ export default class Alumno extends Component {
     this.getData();
     console.log("USUARIO ELIMINADO :" + id_alumno);
   };
-
+  
   render() {
+    const { paginaActual, alumnoPorPagina, loading} = this.state;
+    const indexUltimaPagina = paginaActual * alumnoPorPagina;
+    const indexPaginaActual = indexUltimaPagina - alumnoPorPagina;
+    const alumnoActual = this.state.users.slice(indexPaginaActual, indexUltimaPagina);
+
+    const paginate = pageNum => this.setState({paginaActual: pageNum});
+    const nextPage = () => this.setState({paginaActual: paginaActual+1});
+    const prevPage = () => this.setState({paginaActual: paginaActual-1});
+
+
     return (
       <div className="row">
         <div className="col-12 col-sm-12 col-md-5">
@@ -242,26 +260,16 @@ export default class Alumno extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.users.map(usuario => (
-                  <tr key={usuario.id_alumno}>
-                    <td>{usuario.nombre}</td>
-                    <td>{usuario.apellido_pat}</td>
-                    <td>{usuario.apellido_mat}</td>
-                    <td>{usuario.nombre_carrera}</td>
-                    <td>{usuario.matricula}</td>
-                    <td>{usuario.clave_grupo}</td>
-                    <td>
-                      <button
-                        onClick={() => this.deleteUser(usuario.id_alumno)}
-                        className="btn btn-danger"
-                      >
-                        Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                <AlumnosMap posts={alumnoActual} loading={loading} deleteUser={this.deleteUser}/>
               </tbody>
             </table>
+            <PaginacionAlumno 
+              postPerPage={alumnoPorPagina} 
+              totalPost={this.state.users.length} 
+              paginate={paginate} 
+              nextPage={nextPage}
+              prevPage={prevPage}
+            />
           </div>
         </div>
       </div>

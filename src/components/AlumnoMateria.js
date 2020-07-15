@@ -86,8 +86,8 @@ export default class AlumnoMateria extends Component {
   getAlumnosByMateria = async (id_materia) => {
     console.log(id_materia);
     const response = await axios.get(
-      "http://localhost:8080/materias/list_alu?id_materia=" + id_materia
-    );
+      "http://localhost:8080/materias/list_alu2?id_materia=" + id_materia 
+    ); 
     const alumnoGrupo = response.data;
     let calificaciones = {};
     alumnoGrupo.forEach(({ id_alumno }) => {
