@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
-import {Snackbar} from "./snackbar/Snackbar";
+import { Snackbar } from "./snackbar/Snackbar";
+import MateriasMap from "./MateriasMap";
+import PaginacionAlumno from "./PaginacionAlumno";
 
 export default class Materia extends Component {
   snackbarRef = React.createRef();
@@ -13,11 +15,15 @@ export default class Materia extends Component {
       faltas_permitidas: "",
       fk_maestro: "",
       fk_carrera: "",
-      fk_grupo : ""
+      fk_grupo: "",
     },
     carreras: [],
     maestros: [],
-    grupos: []
+    grupos: [],
+    // paginacion
+    loading: false,
+    paginaActual: 1,
+    materiaPorPagina: 5,
   };
 
   componentDidMount() {
@@ -28,13 +34,13 @@ export default class Materia extends Component {
   }
 
   getGrupo = async () => {
-    const grupo = await axios.get("http://localhost:8080/grupos/listar")
+    const grupo = await axios.get("http://localhost:8080/grupos/listar");
     this.setState({
-      grupos : grupo.data
+      grupos: grupo.data,
     });
     console.log("GRUPOS");
     console.log(this.state.grupos);
-  }; 
+  };
 
   getCarrera = async () => {
     const carrera = await axios.get("http://localhost:8080/carreras/listar");
@@ -56,10 +62,12 @@ export default class Materia extends Component {
   };
 
   getMateria = async () => {
+    this.setState({ loading: true });
     const response = await axios.get("http://localhost:8080/materias/listar");
     this.setState({
       materias: response.data,
     });
+    this.setState({ loading: false });
     console.log("Materias");
     console.log(this.state.materias);
   };
@@ -89,7 +97,7 @@ export default class Materia extends Component {
       alert("RELLENAR TODOS LOS CAPOS FALTANTES");
     } else {
       await axios.post("http://localhost:8080/materias/crear", data);
-      this.snackbarRef.current.openSnackBar('Materia Agregada Exitosamente...');
+      this.snackbarRef.current.openSnackBar("Materia Agregada Exitosamente...");
       this.getCarrera();
       this.getMaestro();
       this.getMateria();
@@ -100,7 +108,7 @@ export default class Materia extends Component {
           faltas_permitidas: "",
           fk_maestro: "",
           fk_carrera: "",
-          fk_grupo: ""
+          fk_grupo: "",
         },
       });
     }
@@ -108,7 +116,7 @@ export default class Materia extends Component {
 
   deleteUser = async (id_materia) => {
     await axios.get(`http://localhost:8080/materias/borrar/${id_materia}`);
-    this.snackbarRef.current.openSnackBar('Materia Eliminada...');
+    this.snackbarRef.current.openSnackBar("Materia Eliminada...");
     this.getMateria();
     console.log("MATERIA ELIMINADA :" + id_materia);
   };
@@ -120,8 +128,20 @@ export default class Materia extends Component {
       faltas_permitidas,
       fk_maestro,
       fk_carrera,
-      fk_grupo
+      fk_grupo,
     } = this.state.materia;
+
+    const { paginaActual, materiaPorPagina, loading } = this.state;
+    const indexUltimaPagina = paginaActual * materiaPorPagina;
+    const indexPaginaActual = indexUltimaPagina - materiaPorPagina;
+    const materiaActual = this.state.materias.slice(
+      indexPaginaActual,
+      indexUltimaPagina
+    );
+
+    const paginate = (pageNum) => this.setState({ paginaActual: pageNum });
+    const nextPage = () => this.setState({ paginaActual: paginaActual + 1 });
+    const prevPage = () => this.setState({ paginaActual: paginaActual - 1 });
     return (
       <div className="row">
         <div className="col-12 col-sm-12 col-md-6">
@@ -187,15 +207,12 @@ export default class Materia extends Component {
                   {this.state.grupos.map((grupo) => (
                     <option value={grupo.id_grupo} key={grupo.id_grupo}>
                       {" "}
-                      {grupo.clave_grupo}
-                      {" "}
-                      {grupo.clave_cuatrimestre}
-                      {" "}
+                      {grupo.clave_grupo} {grupo.clave_cuatrimestre}{" "}
                       {grupo.turno}
                     </option>
                   ))}
                 </select>
-               
+
                 <br />
                 <br />
 
@@ -219,54 +236,24 @@ export default class Materia extends Component {
                 <button type="submit" className="btn btn-success">
                   Guardar
                 </button>
-                <Snackbar ref={this.snackbarRef}/>
-
+                <Snackbar ref={this.snackbarRef} />
               </div>
             </form>
           </div>
         </div>
         <div className="col-12 col-sm-12 col-md-6">
-          {this.state.materias.map((materia) => (
-            <div className="card bg-light mb-3" key={materia.id_materia}>
-              <div className="card-header">{materia.nombre_carrera}</div>
-              <div className="card-body">
-                <h5 className="card-title">{materia.nombre}</h5>
-                <p className="card-text">
-                  <span>
-                    {" "}
-                    <strong>Docente :</strong>
-                    {materia.nombres} {materia.apellido_paterno}{" "}
-                    {materia.apellido_materno}
-                  </span>
-                  <br />
-                  <span>
-                    {" "}
-                    <strong>Total de Horas : </strong>
-                    {materia.horas}
-                    {" Horas "}
-                  </span>
-                  <br />
-                  <span>
-                    <strong>Faltas Permitidas : </strong>{" "}
-                    {materia.faltas_permitidas}
-                  </span>
-                  {/* <span>
-                    <strong>Grupo : </strong>{" "}
-                    {materia.faltas_permitidas}
-                  </span> */}
-                </p>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => this.deleteUser(materia.id_materia)}
-                >
-                  Eliminar
-                </button>
-                {/* <br/>
-                <br/>
-                <button className="btn btn-success"> Editar</button> */}
-              </div>
-            </div>
-          ))}
+          <MateriasMap
+            posts={materiaActual}
+            loading={loading}
+            deleteMateria={this.deleteUser}
+          />
+          <PaginacionAlumno
+            postPerPage={materiaPorPagina}
+            totalPost={this.state.materias.length}
+            paginate={paginate}
+            nextPage={nextPage}
+            prevPage={prevPage}
+          />
         </div>
       </div>
     );
